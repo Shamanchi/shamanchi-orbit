@@ -1,33 +1,33 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Eye, Shield, Clock, Brain, XCircle, CheckCircle2 } from 'lucide-react'
+import { Eye, Shield, Clock, Brain, XCircle, CheckCircle2, Sparkles } from 'lucide-react'
 
 const strengths = [
   {
     icon: Clock,
     title: 'Скорость',
-    desc: 'AI-ускоренная разработка. Неделя задачи → 2-3 дня. Но не за счёт качества — за счёт инструментов.',
+    desc: 'AI-ускоренная разработка. Неделя задачи → 2-3 дня. Но не за счёт качества — за счёт инструментов и чёткого процесса.',
   },
   {
     icon: Eye,
     title: 'Прозрачность',
-    desc: 'Структурированные отчёты, промежуточные демо, честные сроки. Вы всегда знаете, на каком этапе проект.',
+    desc: 'Структурированные отчёты, промежуточные демо, честные сроки. Вы всегда знаете, на каком этапе проект и почему.',
   },
   {
     icon: Shield,
     title: 'Надёжность',
-    desc: 'Обработка ошибок, логирование, fallback-файлы, мониторинг. Если что-то пойдёт не так — я узнаю первым.',
+    desc: 'Обработка ошибок, логирование, fallback-файлы, мониторинг. Если что-то пойдёт не так — я узнаю первым, а не вы.',
   },
   {
     icon: Brain,
     title: 'Понимание бизнеса',
-    desc: 'Смотрю не «что в ТЗ», а «какую проблему вы решаете». Предлагаю, а не просто исполняю.',
+    desc: 'Смотрю не «что в ТЗ», а «какую проблему вы решаете». Предлагаю решения, которые вы не заказывали, но они нужны.',
   },
 ]
 
 const limitations = [
-  'Не беру задачи на WordPress / 1С-разработку — это не мой профиль.',
+  'Не беру задачи на WordPress / 1С-разработку / дизайн — это не мой профиль.',
   'Простые задачи — 1-2 дня, сложные — до недели. Не обещаю «за вечер».',
   'Если вижу риск — говорю сразу, а не обещаю невозможное.',
 ]
@@ -44,8 +44,8 @@ export default function WhyMe() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orbit-cyan/10 border border-orbit-cyan/20 text-orbit-cyan text-xs font-mono mb-4">
-            <Shield size={12} />
-            Честность прежде всего
+            <Sparkles size={12} />
+            Философия работы
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Почему <span className="gradient-text">со мной</span>
@@ -57,7 +57,6 @@ export default function WhyMe() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {/* Strengths */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <CheckCircle2 className="text-orbit-green" size={20} />
@@ -83,7 +82,6 @@ export default function WhyMe() {
             ))}
           </div>
 
-          {/* Limitations (Pratfall effect) */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <XCircle className="text-red-400" size={20} />
@@ -91,8 +89,8 @@ export default function WhyMe() {
             </h3>
             <div className="orbit-card rounded-xl p-6 border-red-500/20">
               <p className="text-orbit-muted text-sm mb-4">
-                Я не беру всё подряд. Специализируюсь на парсинге, ботах,
-                интеграциях и автоматизации. Если задача вне профиля — скажу
+                Я не беру всё подряд. Специализируюсь на автоматизации, ботах,
+                интеграциях и AI-решениях. Если задача вне профиля — скажу
                 честно и порекомендую коллегу.
               </p>
               <div className="space-y-3">
@@ -112,8 +110,8 @@ export default function WhyMe() {
               </div>
             </div>
             <p className="text-xs text-orbit-muted italic">
-              Эффект Пратфолла: показывать 1-2 ограничения повышает доверие
-              сильнее, чем 100% обещаний. Я проверял.
+              Эффект Пратфолла: показывать ограничения повышает доверие
+              сильнее, чем 100% обещаний.
             </p>
           </div>
         </div>

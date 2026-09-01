@@ -1,20 +1,20 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { AlertTriangle, Clock, Skull, TrendingDown } from 'lucide-react'
+import { AlertTriangle, Clock, Database, TrendingDown } from 'lucide-react'
 
 const pains = [
   {
     icon: Clock,
-    title: 'Ручной перенос данных из Excel',
-    desc: 'Вы тратите 4 часа в день на копирование строк. Через 2 недели это 200-часовой долг, который никто не оплатит.',
+    title: 'Ручной перенос данных между сервисами',
+    desc: 'Вы тратите 4 часа в день на копирование из Excel в 1С, из 1С в Telegram, из Telegram в Google Sheets. Через 2 недели это 200-часовой долг.',
     stat: '4 ч/день',
   },
   {
-    icon: Skull,
-    title: 'Парсер падает каждую ночь',
-    desc: 'Узнаёте об ошибке от клиентов, а не от мониторинга. Потеря 50K позиций за сутки — это не баг, это убыток.',
-    stat: '50K позиций',
+    icon: Database,
+    title: 'Данные разбросаны по 5 разным системам',
+    desc: 'CRM, Excel, Telegram, email, 1С — каждый живёт своей жизнью. Нет единой картины. Решения принимаются вслепую.',
+    stat: '5 систем',
   },
   {
     icon: TrendingDown,

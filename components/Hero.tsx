@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Github, ArrowRight, Terminal } from 'lucide-react'
+import { Send, Github, ArrowRight, Terminal, Users } from 'lucide-react'
 import { reachGoal } from '@/components/Analytics'
 
 const codeLines = [
@@ -38,19 +38,19 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orbit-cyan/10 border border-orbit-cyan/20 text-orbit-cyan text-xs font-mono mb-6">
-            <span className="w-2 h-2 rounded-full bg-orbit-cyan animate-pulse" />
-            Доступен для проектов
+            <Users size={12} />
+            Микро-мастерская с методологией мирового класса
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-            Автоматизирую{' '}
+            Автоматизируем{' '}
             <span className="gradient-text">бизнес-процессы</span>, которые
             отнимают у вас{' '}
             <span className="text-orbit-green">10+ часов в неделю</span>
           </h1>
 
           <p className="text-lg text-orbit-muted mb-8 max-w-xl">
-            Python · Парсинг · Telegram-боты · API-интеграции · AI.
+            Telegram-боты · API-интеграции · AI-агенты · Скрипты автоматизации.
             <br />
             От идеи до запуска за{' '}
             <span className="text-white font-semibold">3-7 дней</span>. С

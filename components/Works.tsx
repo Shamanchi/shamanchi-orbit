@@ -1,16 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Bot, Database, Globe, FileSpreadsheet, Server } from 'lucide-react'
+import { ExternalLink, Github, Bot, Workflow, Globe, FileSpreadsheet, Server, Brain } from 'lucide-react'
 import { reachGoal } from '@/components/Analytics'
 
 const projects = [
   { icon: Bot, title: 'Telegram-бот с FSM', desc: 'Асинхронный бот: заявки, рассылки, CRM, оплата, админ-панель. aiogram 3.x, middleware, .env-конфиг.', tags: ['Python', 'aiogram 3.x', 'FSM'], demo: 'https://t.me/PavelYrevichh', code: 'https://github.com/Shamanchi/telegram-bot-aiogram' },
-  { icon: Database, title: 'Промышленный парсер', desc: '100K+ записей/сутки. CDP, undetected-chromedriver, прокси-пулы, Redis, Celery. Не ломается под защитой.', tags: ['Python', 'Playwright', 'Redis', 'Celery'], demo: null, code: 'https://github.com/Shamanchi/advanced-marketplace-scraper' },
-  { icon: Globe, title: 'API-интегратор', desc: 'REST API клиент с retry, backoff, Pydantic-валидацией. Связка 1С, Битрикс24, amoCRM, Google Sheets.', tags: ['Python', 'Pydantic', 'REST'], demo: null, code: 'https://github.com/Shamanchi/python-api-integrator' },
+  { icon: Workflow, title: 'Система интеграций', desc: 'Связка 1С, Битрикс24, amoCRM, Google Sheets, Telegram. Единый поток данных между 5+ сервисами.', tags: ['Python', 'Pydantic', 'REST', 'n8n'], demo: null, code: 'https://github.com/Shamanchi/python-api-integrator' },
+  { icon: Globe, title: 'API-интегратор', desc: 'REST API клиент с retry, backoff, валидацией. Надёжная связь любых сервисов: от 1С до облачных CRM.', tags: ['Python', 'Pydantic', 'REST'], demo: null, code: 'https://github.com/Shamanchi/python-api-integrator' },
   { icon: FileSpreadsheet, title: 'Отчётность и аналитика', desc: 'Pandas, openpyxl, Excel с макросами, PDF, дашборды. Не сырые данные — а решения для бизнеса.', tags: ['Pandas', 'openpyxl', 'PDF'], demo: null, code: 'https://github.com/Shamanchi' },
   { icon: Server, title: 'FastAPI + PostgreSQL', desc: 'REST API на FastAPI + SQLAlchemy + PostgreSQL + Docker. Чистая архитектура, готовая к нагрузке.', tags: ['FastAPI', 'PostgreSQL', 'Docker'], demo: null, code: 'https://github.com/Shamanchi/fastapi-task-manager' },
-  { icon: Bot, title: 'AI-ассистент', desc: 'OpenAI API, function calling, AI-агенты. Интеграция ИИ в бизнес-процессы: ответы, анализ, генерация.', tags: ['OpenAI', 'Function Calling', 'AI Agents'], demo: null, code: 'https://github.com/Shamanchi/ai-openai-assistant' },
+  { icon: Brain, title: 'AI-ассистент', desc: 'OpenAI API, function calling, AI-агенты. Интеграция ИИ в бизнес-процессы: ответы, анализ, генерация.', tags: ['OpenAI', 'Function Calling', 'AI Agents'], demo: null, code: 'https://github.com/Shamanchi/ai-openai-assistant' },
 ]
 
 export default function Works() {
