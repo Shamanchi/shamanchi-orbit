@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import './globals.css'
 
 // ═══════════════════════════════════════════════════════════════
 // SEO построен на скрытых паттернах (Машина распознавания паттернов + Запретное знание)
@@ -11,7 +12,7 @@ import type { Metadata } from 'next'
 // ═══════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://shamanchi.github.io/shamanchi-orbit/'),
+  metadataBase: new URL('https://shamanchi.github.io'),
   // Title: якорь боли + цифра + решение. Не "услуги", а "утечка времени"
   title: 'Shamanchi Orbit — Остановите утечку 200+ часов/мес на ручной работе | Автоматизация за 3-7 дней',
 
