@@ -1,93 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Reveal from '@/components/Reveal'
-import { motion } from 'framer-motion'
+import OrbitMapShards from '@/components/OrbitMapShards'
+import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 
-type NodeSpec = { id: string; label: string; x: number; y: number }
-
-const NODES: NodeSpec[] = [
-  { id: '1c', label: '1С', x: 400, y: 84 },
-  { id: 'crm', label: 'CRM', x: 656, y: 216 },
-  { id: 'tg', label: 'Telegram', x: 596, y: 368 },
-  { id: 'xl', label: 'Excel', x: 232, y: 372 },
-  { id: 'hand', label: 'Ручной ввод', x: 144, y: 196 },
-]
-
-const BROKEN: Array<[string, string]> = [
-  ['1c', 'crm'],
-  ['crm', 'tg'],
-  ['tg', 'xl'],
-  ['xl', '1c'],
-  ['hand', '1c'],
-  ['hand', 'crm'],
-]
-
-function nodeById(id: string): NodeSpec {
-  const found = NODES.find((n) => n.id === id)
-  if (!found) {
-    throw new Error(`unknown node ${id}`)
-  }
-  return found
-}
-
-function BrokenLink({ a, b }: { a: string; b: string }) {
-  const na = nodeById(a)
-  const nb = nodeById(b)
-  const mx = (na.x + nb.x) / 2
-  const my = (na.y + nb.y) / 2
-  return (
-    <g>
-      <line
-        x1={na.x}
-        y1={na.y}
-        x2={nb.x}
-        y2={nb.y}
-        stroke="#8B98A9"
-        strokeOpacity={0.25}
-        strokeWidth={1}
-        strokeDasharray="3 8"
-      />
-      <text
-        x={mx}
-        y={my + 4}
-        textAnchor="middle"
-        className="font-mono"
-        fontSize={12}
-        fill="#8B98A9"
-        fillOpacity={0.65}
-      >
-        ×
-      </text>
-    </g>
-  )
-}
-
-function NodeView({ node }: { node: NodeSpec }) {
-  return (
-    <g>
-      <circle
-        cx={node.x}
-        cy={node.y}
-        r={5.5}
-        fill="#0B1120"
-        stroke="#8B98A9"
-        strokeOpacity={0.85}
-        strokeWidth={1}
-      />
-      <text
-        x={node.x}
-        y={node.y + 26}
-        textAnchor="middle"
-        className="font-mono"
-        fontSize={13}
-        fill="#8B98A9"
-      >
-        {node.label}
-      </text>
-    </g>
-  )
-}
+const OrbitMapFlow = dynamic(() => import('@/components/OrbitMapFlow'), {
+  ssr: false,
+  loading: () => null,
+})
 
 const toggleClass = (active: boolean) =>
   `rounded border px-5 py-2.5 font-mono text-xs transition-colors ${
@@ -98,15 +21,34 @@ const toggleClass = (active: boolean) =>
 
 export default function OrbitMap() {
   const [flow, setFlow] = useState(false)
-  const [animate, setAnimate] = useState(false)
+  const reduce = usePrefersReducedMotion()
 
-  useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!reduced) {
-      const t = window.setTimeout(() => setAnimate(true), 400)
-      return () => window.clearTimeout(t)
-    }
-  }, [])
+  const diagram = flow ? (
+    <div key="flow" className="absolute inset-0" role="img" aria-label="Состояние после: проекты движутся по орбитам вокруг вашего бизнеса">
+      <OrbitMapFlow reduced={reduce} />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+      >
+        <div className="relative flex flex-col items-center">
+          <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.12),transparent_70%)]" />
+          <span
+            className="relative font-display text-lg font-semibold tracking-tight text-ink sm:text-2xl"
+            style={{ textShadow: '0 0 42px rgba(0,212,255,0.45)' }}
+          >
+            ваш бизнес
+          </span>
+          <span className="relative mt-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-dim/70">
+            центр системы
+          </span>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div key="broken" className="absolute inset-0">
+      <OrbitMapShards />
+    </div>
+  )
 
   return (
     <section id="orbit-map" className="relative py-28">
@@ -137,85 +79,35 @@ export default function OrbitMap() {
           </div>
         </div>
 
-        <div className="relative border border-white/[0.06] p-3 sm:p-8">
-          <svg
-            viewBox="0 0 800 470"
-            className="h-auto w-full"
-            role="img"
-            aria-label={
-              flow
-                ? 'Схема после: системы связаны в одну орбиту'
-                : 'Схема до: системы не связаны между собой'
-            }
-          >
-            <motion.g
-              animate={{ opacity: flow ? 0 : 1 }}
-              transition={{ duration: 0.3 }}
-              pointerEvents="none"
-            >
-              {BROKEN.map(([a, b]) => (
-                <BrokenLink key={`${a}-${b}`} a={a} b={b} />
-              ))}
-            </motion.g>
-
-            <motion.g
-              animate={{ opacity: flow ? 1 : 0 }}
-              transition={{ duration: 0.4 }}
-              pointerEvents="none"
-            >
-              <ellipse
-                cx={400}
-                cy={227}
-                rx={262}
-                ry={143}
-                fill="none"
-                stroke="#00D4FF"
-                strokeOpacity={0.55}
-                strokeWidth={1.2}
-              />
-              {animate && (
-                <>
-                  <circle r={4.6} fill="#00D4FF">
-                    <animateMotion
-                      dur="9s"
-                      repeatCount="indefinite"
-                      path="M 400 84 A 262 143 0 1 1 399.9 84"
-                    />
-                  </circle>
-                  {[
-                    { begin: -0.8, r: 3, opacity: 0.4 },
-                    { begin: -1.7, r: 2.4, opacity: 0.26 },
-                    { begin: -2.8, r: 2, opacity: 0.16 },
-                  ].map((p) => (
-                    <circle key={p.begin} r={p.r} fill="#00D4FF" opacity={p.opacity}>
-                      <animateMotion
-                        dur="9s"
-                        begin={`-${p.begin}s`}
-                        repeatCount="indefinite"
-                        path="M 400 84 A 262 143 0 1 1 399.9 84"
-                      />
-                    </circle>
-                  ))}
-                </>
-              )}
-            </motion.g>
-
-            <g>
-              {NODES.map((node) => (
-                <NodeView key={node.id} node={node} />
-              ))}
-            </g>
-          </svg>
+        <div className="relative overflow-hidden border border-white/[0.06]">
+          <div className="relative aspect-[800/470] w-full">
+            {reduce ? (
+              diagram
+            ) : (
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={flow ? 'flow' : 'broken'}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.22 }}
+                >
+                  {diagram}
+                </motion.div>
+              </AnimatePresence>
+            )}
+          </div>
         </div>
 
         <p className="mt-5 font-mono text-xs text-ink-dim">
           {flow ? (
             <>
-              поток: <span className="text-ink">1С → CRM → Telegram → Excel → 1С</span> — движение без рук
+              поток: <span className="text-ink">проекты по орбитам вокруг вашего бизнеса</span> — движение без рук
             </>
           ) : (
             <>
-              связи: <span className="text-ink-dim">1С · CRM · Telegram · Excel</span> — каждая система держит данные при себе
+              связи: <span className="text-ink">0</span> · каждая система держит данные при себе
             </>
           )}
         </p>
