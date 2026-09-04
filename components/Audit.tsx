@@ -5,6 +5,7 @@ import Reveal from '@/components/Reveal'
 import { AnimatePresence, motion } from 'framer-motion'
 import { monoDigits } from '@/components/Text'
 import ReplyStatus from '@/components/ReplyStatus'
+import AuditStars from '@/components/AuditStars'
 
 const questions: Array<{ title: string; options: string[] }> = [
   {
@@ -143,7 +144,9 @@ export default function Audit() {
                     transition={{ duration: 0.4 }}
                     className="mt-6"
                   >
-                    <div className="terminal p-6 sm:p-7">
+                    <div className="terminal relative overflow-hidden rounded-md p-6 sm:p-7">
+                      <AuditStars />
+                      <div className="relative">
                       <div className="flex items-center gap-2.5 border-b border-white/[0.06] pb-3">
                         <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
                         <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
@@ -179,6 +182,7 @@ export default function Audit() {
                       <p className="mt-5 font-mono text-xs text-ink-dim">
                         ответ — в течение дня. @PavelYrevichh · lietman46@mail.com
                       </p>
+                    </div>
                     </div>
                   </motion.div>
                 )}
