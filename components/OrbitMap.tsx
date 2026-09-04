@@ -13,7 +13,7 @@ const OrbitMapFlow = dynamic(() => import('@/components/OrbitMapFlow'), {
 })
 
 const toggleClass = (active: boolean) =>
-  `rounded border px-5 py-2.5 font-mono text-xs transition-colors ${
+  `rounded-sm border px-5 py-2.5 font-mono text-xs transition-colors ${
     active
       ? 'border-white/[0.3] text-ink'
       : 'border-white/[0.1] text-ink-dim hover:border-white/[0.2] hover:text-ink'
@@ -79,7 +79,7 @@ export default function OrbitMap() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden border border-white/[0.06]">
+        <div className="relative overflow-hidden rounded-md border border-white/[0.06]">
           <div className="relative aspect-[800/470] w-full">
             {reduce ? (
               diagram
