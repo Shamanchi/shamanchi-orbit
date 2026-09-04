@@ -1,15 +1,12 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import Reveal from '@/components/Reveal'
 import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import MetricsBackdrop from '@/components/MetricsBackdrop'
 
-const QuarksBurst = dynamic(() => import('@/components/MetricsQuarks'), {
-  ssr: false,
-  loading: () => null,
-})
+const PULSE_MS = 1450
 
 const metrics = [
   {
@@ -79,9 +76,14 @@ function MetricValue({ metric }: { metric: (typeof metrics)[number] }) {
   return (
     <div
       ref={ref}
-      className={`font-mono text-[52px] leading-none tracking-tight sm:text-6xl xl:text-[76px] ${
+      className={`font-mono text-[76px] leading-none tracking-tight text-ink sm:text-[96px] lg:text-[128px] xl:text-[140px] ${
         metric.accent ? 'text-chi' : 'text-ink'
       }`}
+      style={
+        metric.accent
+          ? { textShadow: '0 0 40px rgba(0, 212, 255, 0.25)' }
+          : undefined
+      }
     >
       {value}
       {metric.suffix}
@@ -91,39 +93,26 @@ function MetricValue({ metric }: { metric: (typeof metrics)[number] }) {
 
 export default function Metrics() {
   const sectionRef = useRef<HTMLElement | null>(null)
-  const [burst, setBurst] = useState(false)
   const reduce = usePrefersReducedMotion()
+  const [counting, setCounting] = useState(false)
 
   useEffect(() => {
     const el = sectionRef.current
-    if (!el) return
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const mobile =
-      window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768
-    if (reduced || mobile) return
-
-    let webgl = false
-    try {
-      const probe = document.createElement('canvas')
-      webgl = Boolean(probe.getContext('webgl2') || probe.getContext('webgl'))
-    } catch {
-      webgl = false
-    }
-    if (!webgl) return
+    if (!el || reduce) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
-          setBurst(true)
+          setCounting(true)
           observer.disconnect()
+          window.setTimeout(() => setCounting(false), PULSE_MS + 250)
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.35 }
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [reduce])
 
   return (
     <section
@@ -147,12 +136,13 @@ export default function Metrics() {
         </Reveal>
 
         <div className="relative border-t border-white/[0.06] pt-16 lg:pt-20">
-          <div className="grid grid-cols-1 gap-y-20 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-0">
+          <MetricsBackdrop play={counting} reduced={reduce} />
+          <div className="relative grid grid-cols-1 gap-y-20 sm:grid-cols-2 lg:gap-x-16 lg:gap-y-28">
             {metrics.map((metric) => {
               const content = (
                 <>
                   <MetricValue metric={metric} />
-                  <div className="mt-6 max-w-[230px] text-base leading-snug text-ink-dim">
+                  <div className="mt-6 max-w-[320px] text-base leading-snug text-ink-dim">
                     {metric.label}
                   </div>
                   <div className="mt-3 font-mono text-[11px] text-ink-dim/70">
@@ -181,12 +171,6 @@ export default function Metrics() {
         <p className="relative mt-24 font-mono text-xs text-ink-dim">
           {'// без округления в сторону маркетинга'}
         </p>
-
-        {burst && (
-          <div className="pointer-events-none absolute inset-0 z-10" aria-hidden="true">
-            <QuarksBurst />
-          </div>
-        )}
       </div>
     </section>
   )
