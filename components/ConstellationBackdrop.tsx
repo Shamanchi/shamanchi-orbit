@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const COLOR_BASE = '#8B98A9'
 const COLOR_ACCENT = '#00D4FF'
@@ -15,6 +15,7 @@ const SMALL_AREA_PX = 520
 const POINT_COUNT_DESKTOP = 52
 const POINT_COUNT_MOBILE = 44
 const WRAP_MARGIN = 0.06
+const MOBILE_WIDTH_PX = 768
 
 type Point = {
   x: number
@@ -72,10 +73,25 @@ function seedPoints(width: number, height: number): Point[] {
   return points
 }
 
-export default function HeroConstellation({ animate = false }: { animate?: boolean }) {
+/**
+ * Site-wide fixed constellation: dots and faint links painted on a
+ * full-viewport canvas behind the content. Same visual config as the old
+ * hero constellation. Off on coarse pointers / small viewports and under
+ * prefers-reduced-motion.
+ */
+export default function ConstellationBackdrop() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const coarse = window.matchMedia('(pointer: coarse)').matches
+    setEnabled(!reduced && !coarse && window.innerWidth >= MOBILE_WIDTH_PX)
+  }, [])
+
+  useEffect(() => {
+    if (!enabled) return
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -122,7 +138,7 @@ export default function HeroConstellation({ animate = false }: { animate?: boole
         if (!point.accent) continue
         const sx = point.x * width
         const sy = point.y * height
-        const pulse = animate ? 0.72 + 0.28 * Math.sin(now / 900 + point.phase) : 1
+        const pulse = 0.72 + 0.28 * Math.sin(now / 900 + point.phase)
         const halo = context.createRadialGradient(sx, sy, 0, sx, sy, 7)
         halo.addColorStop(0, `rgba(0, 212, 255, ${(0.3 * pulse).toFixed(3)})`)
         halo.addColorStop(1, 'rgba(0, 212, 255, 0)')
@@ -165,9 +181,8 @@ export default function HeroConstellation({ animate = false }: { animate?: boole
     }
 
     const setup = () => {
-      const bounds = canvas.getBoundingClientRect()
-      const width = Math.max(1, Math.round(bounds.width))
-      const height = Math.max(1, Math.round(bounds.height))
+      const width = Math.max(1, Math.round(window.innerWidth))
+      const height = Math.max(1, Math.round(window.innerHeight))
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const bufferWidth = Math.round(width * dpr)
       const bufferHeight = Math.round(height * dpr)
@@ -197,18 +212,15 @@ export default function HeroConstellation({ animate = false }: { animate?: boole
       render(performance.now())
     }
 
-    const startLoop = () => {
-      cancelAnimationFrame(animationFrame)
-      lastTime = performance.now()
-      animationFrame = requestAnimationFrame(animateFrame)
-    }
-
     setup()
-    if (animate) startLoop()
+    lastTime = performance.now()
+    animationFrame = requestAnimationFrame(animateFrame)
 
     const onResize = () => {
       setup()
-      if (animate) startLoop()
+      lastTime = performance.now()
+      cancelAnimationFrame(animationFrame)
+      animationFrame = requestAnimationFrame(animateFrame)
     }
 
     window.addEventListener('resize', onResize)
@@ -217,13 +229,16 @@ export default function HeroConstellation({ animate = false }: { animate?: boole
       cancelAnimationFrame(animationFrame)
       window.removeEventListener('resize', onResize)
     }
-  }, [animate])
+  }, [enabled])
+
+  if (!enabled) return null
 
   return (
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      className="pointer-events-none fixed inset-0"
+      style={{ zIndex: -1 }}
     />
   )
 }

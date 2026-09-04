@@ -11,11 +11,6 @@ const HeroOrbits = dynamic(() => import('@/components/HeroOrbits'), {
   loading: () => null,
 })
 
-const HeroConstellation = dynamic(() => import('@/components/HeroConstellation'), {
-  ssr: false,
-  loading: () => null,
-})
-
 type Mode = 'idle' | 'webgl' | 'particles' | 'css'
 
 function StarsParticles() {
@@ -85,7 +80,6 @@ export default function SpaceBackdrop() {
       ) : (
         <div className="stars-static absolute inset-0" />
       )}
-      {mode !== 'idle' && <HeroConstellation animate={mode === 'webgl'} />}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#0B1120]" />
     </div>
   )

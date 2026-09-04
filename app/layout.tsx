@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import ConstellationBackdrop from '@/components/ConstellationBackdrop'
 
 const siteUrl = 'https://shamanchi.github.io/shamanchi-orbit/'
 
@@ -195,7 +196,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ConstellationBackdrop />
+        {children}
+      </body>
     </html>
   )
 }
