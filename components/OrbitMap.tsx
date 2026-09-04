@@ -28,7 +28,7 @@ export default function OrbitMap() {
       <OrbitMapFlow reduced={reduce} />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+        className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center md:flex"
       >
         <div className="relative flex flex-col items-center">
           <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.12),transparent_70%)]" />
@@ -103,7 +103,7 @@ export default function OrbitMap() {
         <p className="mt-5 font-mono text-xs text-ink-dim">
           {flow ? (
             <>
-              поток: <span className="text-ink">проекты по орбитам вокруг вашего бизнеса</span> — движение без рук
+              поток: <span className="text-ink">8 шагов по замкнутому циклу</span> — заявка → ответ → отчёт → аналитика → снова 1С
             </>
           ) : (
             <>

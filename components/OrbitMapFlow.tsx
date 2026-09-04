@@ -1,146 +1,264 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Stars } from '@react-three/drei'
-import * as THREE from 'three'
-import { useMemo, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-type DotSpec = {
-  offset: number
-  speed: number
-  size: number
-  opacity: number
+const CX = 400
+const CY = 235
+const OUTER = { rx: 320, ry: 150 }
+const INNER = { rx: 205, ry: 96 }
+const INK = '#E6EDF3'
+const INK_DIM = '#8B98A9'
+const CHI = '#00D4FF'
+const SEGMENT_MS = 1100
+
+type StepType = 'system' | 'action'
+
+type Step = {
+  name: string
+  sub: string
+  type: StepType
+  person?: boolean
 }
 
-type RingSpec = {
-  a: number
-  b: number
-  z: number
-  tiltX: number
-  rotZ: number
-  speed: number
-  opacity: number
-  dots: DotSpec[]
-}
-
-// Same principle as the orbit rings that used to run behind the hero:
-// tilted ellipses, dots travelling along them. More rings, more project dots,
-// center (your business) is rendered by the parent as an HTML overlay.
-const RINGS: RingSpec[] = [
-  {
-    a: 1.6, b: 1.12, z: -0.9, tiltX: 0.3, rotZ: 0.5, speed: 0.16, opacity: 0.36,
-    dots: [
-      { offset: 0.0, speed: 1.0, size: 0.05, opacity: 0.95 },
-      { offset: 0.5, speed: 0.85, size: 0.028, opacity: 0.5 },
-    ],
-  },
-  {
-    a: 2.1, b: 1.46, z: 0.05, tiltX: 0.12, rotZ: -0.3, speed: -0.11, opacity: 0.3,
-    dots: [
-      { offset: 0.15, speed: 1.0, size: 0.045, opacity: 0.9 },
-      { offset: 0.62, speed: 0.9, size: 0.026, opacity: 0.45 },
-      { offset: 0.85, speed: 1.25, size: 0.022, opacity: 0.4 },
-    ],
-  },
-  {
-    a: 2.6, b: 1.82, z: -0.45, tiltX: 0.26, rotZ: 0.85, speed: 0.08, opacity: 0.24,
-    dots: [
-      { offset: 0.3, speed: 1.0, size: 0.05, opacity: 0.85 },
-      { offset: 0.05, speed: 1.4, size: 0.03, opacity: 0.5 },
-      { offset: 0.55, speed: 0.75, size: 0.02, opacity: 0.35 },
-    ],
-  },
-  {
-    a: 3.1, b: 2.16, z: 0.2, tiltX: 0.18, rotZ: -0.55, speed: -0.06, opacity: 0.18,
-    dots: [
-      { offset: 0.45, speed: 1.0, size: 0.04, opacity: 0.7 },
-      { offset: 0.9, speed: 1.3, size: 0.025, opacity: 0.4 },
-    ],
-  },
-  {
-    a: 3.55, b: 2.44, z: -0.15, tiltX: 0.34, rotZ: 0.2, speed: 0.045, opacity: 0.14,
-    dots: [
-      { offset: 0.7, speed: 1.0, size: 0.045, opacity: 0.75 },
-      { offset: 0.2, speed: 1.5, size: 0.028, opacity: 0.45 },
-      { offset: 0.4, speed: 0.8, size: 0.02, opacity: 0.3 },
-    ],
-  },
+// Closed data loop: 1 -> 2 -> ... -> 8 -> back to 1.
+// Systems sit on the outer orbit, actions on the inner one.
+const STEPS: Step[] = [
+  { name: '1С', sub: 'заявка · остатки', type: 'system' },
+  { name: 'CRM', sub: 'карточка клиента', type: 'system' },
+  { name: 'Telegram', sub: 'уведомление менеджеру', type: 'action' },
+  { name: 'AI-ассистент', sub: 'типовые вопросы', type: 'action' },
+  { name: 'Менеджер', sub: 'только сложные · контекст', type: 'action', person: true },
+  { name: 'Ответ клиенту', sub: '', type: 'action' },
+  { name: 'Google Sheets', sub: 'отчёт', type: 'system' },
+  { name: 'Аналитика', sub: 'точка рычага', type: 'system' },
 ]
 
-function RingPath({ ring }: { ring: RingSpec }) {
-  const points = useMemo(() => {
-    const curve = new THREE.EllipseCurve(0, 0, ring.a, ring.b, 0, Math.PI * 2, false, 0)
-    return curve.getPoints(160).map((p) => new THREE.Vector3(p.x, p.y, 0))
-  }, [ring.a, ring.b])
-
-  const line = useMemo(
-    () =>
-      new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(points),
-        new THREE.LineBasicMaterial({
-          color: new THREE.Color('#00D4FF'),
-          transparent: true,
-          opacity: ring.opacity,
-        })
-      ),
-    [points, ring.opacity]
-  )
-
-  return <primitive object={line} />
+function nodePosition(index: number) {
+  const angle = (index * Math.PI) / 4
+  const ring = STEPS[index].type === 'system' ? OUTER : INNER
+  return {
+    x: CX + ring.rx * Math.cos(angle),
+    y: CY + ring.ry * Math.sin(angle),
+  }
 }
 
-function RingDot({ ring, dot, reduced }: { ring: RingSpec; dot: DotSpec; reduced: boolean }) {
-  const mesh = useRef<THREE.Mesh>(null)
-  const angle = useRef(dot.offset * Math.PI * 2)
 
-  useFrame((_, delta) => {
-    if (reduced) return
-    angle.current += delta * ring.speed * dot.speed
-    const t = angle.current
-    if (mesh.current) {
-      mesh.current.position.set(ring.a * Math.cos(t), ring.b * Math.sin(t), 0)
-    }
-  })
+function NodeMark({ index }: { index: number }) {
+  const step = STEPS[index]
+  const { x, y } = nodePosition(index)
 
-  const start = dot.offset * Math.PI * 2
+  if (step.person) {
+    return (
+      <g>
+        <circle cx={x} cy={y} r={30} fill={`url(#halo-${index})`} />
+        <circle cx={x} cy={y} r={6} fill={CHI} />
+        <circle cx={x} cy={y} r={6} fill="none" stroke="rgba(0,212,255,0.55)" strokeWidth={6} opacity={0.35} />
+      </g>
+    )
+  }
+
+  if (step.type === 'system') {
+    return (
+      <rect
+        x={x - 5}
+        y={y - 5}
+        width={10}
+        height={10}
+        fill="#0B1120"
+        stroke="rgba(0,212,255,0.5)"
+        strokeWidth={1.2}
+      />
+    )
+  }
+
+  return <circle cx={x} cy={y} r={4.5} fill="#0B1120" stroke="rgba(139,152,169,0.65)" strokeWidth={1.2} />
+}
+
+function NodeLabel({ index }: { index: number }) {
+  const step = STEPS[index]
+  const pos = nodePosition(index)
+  const number = String(index + 1).padStart(2, '0')
 
   return (
-    <mesh
-      ref={mesh}
-      position={[ring.a * Math.cos(start), ring.b * Math.sin(start), 0]}
-    >
-      <sphereGeometry args={[dot.size, 10, 10]} />
-      <meshBasicMaterial color="#00D4FF" transparent opacity={dot.opacity} />
-    </mesh>
+    <g>
+      <text
+        x={pos.x}
+        y={pos.y - 14}
+        textAnchor="end"
+        fontSize={9}
+        className="font-mono"
+        fill={INK_DIM}
+        opacity={0.75}
+      >
+        {number}
+      </text>
+      <text
+        x={pos.x}
+        y={pos.y + 24}
+        textAnchor="middle"
+        fontSize={13}
+        className="font-mono"
+        fill={step.person ? CHI : INK}
+        stroke="#0B1120"
+        strokeWidth={4}
+        paintOrder="stroke"
+      >
+        {step.name}
+      </text>
+      {step.sub ? (
+        <text
+          x={pos.x}
+          y={pos.y + 39}
+          textAnchor="middle"
+          fontSize={10}
+          className="font-mono"
+          fill={INK_DIM}
+          stroke="#0B1120"
+          strokeWidth={3}
+          paintOrder="stroke"
+        >
+          {step.sub}
+        </text>
+      ) : null}
+      {step.person ? (
+        <text
+          x={pos.x}
+          y={pos.y + 54}
+          textAnchor="middle"
+          fontSize={9}
+          className="font-mono"
+          fill={CHI}
+          opacity={0.8}
+          stroke="#0B1120"
+          strokeWidth={3}
+          paintOrder="stroke"
+        >
+          [ человек в цепи ]
+        </text>
+      ) : null}
+    </g>
   )
 }
 
-function OrbitRing({ ring, reduced }: { ring: RingSpec; reduced: boolean }) {
+function MobileScheme() {
   return (
-    <group position={[0, 0, ring.z]}>
-      <group rotation={[ring.tiltX, 0, ring.rotZ]}>
-        <RingPath ring={ring} />
-        {ring.dots.map((dot, index) => (
-          <RingDot key={index} ring={ring} dot={dot} reduced={reduced} />
-        ))}
-      </group>
-    </group>
+    <div className="flex h-full w-full flex-col justify-center gap-1.5 px-1">
+      {[0, 2, 4, 6].map((rowStart) => (
+        <div key={rowStart} className="grid grid-cols-2 gap-1.5">
+          {STEPS.slice(rowStart, rowStart + 2).map((step, offset) => {
+            const index = rowStart + offset
+            const number = String(index + 1).padStart(2, '0')
+            return (
+              <div
+                key={step.name}
+                className={
+                  'flex items-baseline gap-1.5 border px-2 py-1 ' +
+                  (step.person
+                    ? 'border-[rgba(0,212,255,0.5)] bg-[rgba(0,212,255,0.06)]'
+                    : 'border-white/[0.1]')
+                }
+              >
+                <span className="font-mono text-[9px] leading-none text-chi">{number}</span>
+                <span
+                  className={
+                    'truncate font-mono text-[10px] leading-tight ' +
+                    (step.person ? 'text-chi' : 'text-ink')
+                  }
+                >
+                  {step.name}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      ))}
+    </div>
   )
 }
 
 export default function OrbitMapFlow({ reduced }: { reduced: boolean }) {
+  const [mobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
+  const pulseRef = useRef<SVGCircleElement>(null)
+  const glowRef = useRef<SVGCircleElement>(null)
+  const tailRef = useRef<SVGLineElement>(null)
+  const animated = !reduced && !mobile
+
+  useEffect(() => {
+    if (!animated) return
+    const start = performance.now()
+    let frame = 0
+
+    const tick = (now: number) => {
+      const elapsed = now - start
+      const total = STEPS.length * SEGMENT_MS
+      const p = ((elapsed % total) / total) * STEPS.length
+      const seg = Math.floor(p) % STEPS.length
+      const u = p - Math.floor(p)
+      const from = nodePosition(seg)
+      const to = nodePosition((seg + 1) % STEPS.length)
+      const x = from.x + (to.x - from.x) * u
+      const y = from.y + (to.y - from.y) * u
+
+      if (pulseRef.current) {
+        pulseRef.current.setAttribute('cx', String(x))
+        pulseRef.current.setAttribute('cy', String(y))
+      }
+      if (glowRef.current) {
+        glowRef.current.setAttribute('cx', String(x))
+        glowRef.current.setAttribute('cy', String(y))
+      }
+      if (tailRef.current) {
+        tailRef.current.setAttribute('x1', String(from.x))
+        tailRef.current.setAttribute('y1', String(from.y))
+        tailRef.current.setAttribute('x2', String(x))
+        tailRef.current.setAttribute('y2', String(y))
+      }
+      frame = requestAnimationFrame(tick)
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [animated])
+
+  if (mobile) return <MobileScheme />
+
   return (
-    <Canvas
-      dpr={[1, 1.6]}
-      camera={{ position: [0, 0, 6], fov: 50 }}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      frameloop={reduced ? 'demand' : 'always'}
-      style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-    >
-      <Stars radius={55} depth={30} count={900} factor={3.2} saturation={0} fade speed={0.5} />
-      {RINGS.map((ring, index) => (
-        <OrbitRing key={index} ring={ring} reduced={reduced} />
+    <svg viewBox="0 0 800 470" className="h-full w-full" role="img" aria-label="Замкнутый поток данных: 1С, CRM, Telegram, AI-ассистент, Менеджер, ответ клиенту, Google Sheets, аналитика — и снова в 1С">
+      <defs>
+        {STEPS.map((step, index) =>
+          step.person ? (
+            <radialGradient key={index} id={`halo-${index}`}>
+              <stop offset="0%" stopColor={CHI} stopOpacity={0.22} />
+              <stop offset="100%" stopColor={CHI} stopOpacity={0} />
+            </radialGradient>
+          ) : null
+        )}
+        <radialGradient id="pulse-glow">
+          <stop offset="0%" stopColor={CHI} stopOpacity={0.55} />
+          <stop offset="100%" stopColor={CHI} stopOpacity={0} />
+        </radialGradient>
+      </defs>
+
+      {/* Orbit guides */}
+      <ellipse cx={CX} cy={CY} rx={OUTER.rx} ry={OUTER.ry} fill="none" stroke="rgba(139,152,169,0.16)" strokeWidth={1} />
+      <ellipse cx={CX} cy={CY} rx={INNER.rx} ry={INNER.ry} fill="none" stroke="rgba(0,212,255,0.12)" strokeWidth={1} />
+
+      {/* Nodes and labels */}
+      {STEPS.map((step, index) => (
+        <g key={step.name}>
+          <NodeMark index={index} />
+          <NodeLabel index={index} />
+        </g>
       ))}
-    </Canvas>
+
+      {/* Data pulse */}
+      {animated && (
+        <g>
+          <line ref={tailRef} stroke="rgba(0,212,255,0.16)" strokeWidth={1.5} />
+          <circle ref={glowRef} r={16} fill="url(#pulse-glow)" />
+          <circle ref={pulseRef} r={3.2} fill="#E6FDFF" stroke={CHI} strokeWidth={1} />
+        </g>
+      )}
+    </svg>
   )
 }
