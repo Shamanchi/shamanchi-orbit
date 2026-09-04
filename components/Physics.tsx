@@ -1,4 +1,5 @@
 import { monoDigits } from '@/components/Text'
+import Reveal from '@/components/Reveal'
 
 const patterns = [
   {
@@ -22,7 +23,7 @@ export default function Physics() {
   return (
     <section id="physics" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="mb-20 max-w-3xl">
+        <Reveal className="mb-20 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -32,13 +33,13 @@ export default function Physics() {
           <h2 className="mt-7 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Три паттерна, по которым устроен любой бизнес
           </h2>
-        </div>
+        </Reveal>
 
         <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
           {patterns.map((pattern, i) => (
             <article
               key={pattern.num}
-              className={`card-ghost relative p-8 sm:p-9 ${
+              className={`glass-card rounded-md p-8 sm:p-9 ${
                 i === 1 ? 'lg:mt-20' : i === 2 ? 'lg:mt-10' : ''
               }`}
             >

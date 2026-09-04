@@ -1,4 +1,5 @@
 import { monoDigits } from '@/components/Text'
+import Reveal from '@/components/Reveal'
 
 const steps = [
   {
@@ -32,7 +33,7 @@ export default function Process() {
   return (
     <section id="process" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="mb-10 max-w-3xl">
+        <Reveal className="mb-10 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -42,7 +43,7 @@ export default function Process() {
           <h2 className="mt-7 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Пять шагов. От карты процесса до запущенной орбиты
           </h2>
-        </div>
+        </Reveal>
 
         <div>
           {steps.map((step, i) => (

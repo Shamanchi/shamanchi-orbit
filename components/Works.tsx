@@ -1,4 +1,5 @@
 ﻿import { monoDigits } from '@/components/Text'
+import Reveal from '@/components/Reveal'
 
 const projects = [
   {
@@ -31,7 +32,7 @@ export default function Works() {
   return (
     <section id="works" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="mb-16 max-w-3xl">
+        <Reveal className="mb-16 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -44,13 +45,13 @@ export default function Works() {
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-dim">
             Живые репозитории с кодом, документацией и одним измеримым результатом.
           </p>
-        </div>
+        </Reveal>
 
-        <div>
+        <div className="space-y-6">
           {projects.map((project) => (
             <article
               key={project.name}
-              className="grid grid-cols-12 gap-x-6 gap-y-5 border-b border-white/[0.06] py-10 first:border-t"
+              className="glass-card grid grid-cols-12 gap-x-6 gap-y-5 rounded-md p-8 sm:p-10"
             >
               <div className="col-span-12 md:col-span-4">
                 <h3 className="font-display text-xl font-semibold tracking-tight text-ink">

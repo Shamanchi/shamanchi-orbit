@@ -15,6 +15,11 @@ module.exports = {
         },
         chi: '#00D4FF',
       },
+      borderRadius: {
+        sm: '12px',
+        md: '16px',
+        lg: '24px',
+      },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
         display: ['"Space Grotesk"', 'Inter', 'ui-sans-serif', 'sans-serif'],

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const lines = [
   'ручной труд — не «неэффективность». это симптом разрыва между системами, который вы не видите',
@@ -11,15 +11,19 @@ const lines = [
 ]
 
 const TYPE_SPEED = 13
-const HOLD_MS = 2600
 
 export default function TypedTerminal() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [started, setStarted] = useState(false)
   const [count, setCount] = useState(0)
   const [partial, setPartial] = useState(0)
-  const [hold, setHold] = useState(false)
   const finished = count >= lines.length
 
+  // запускаем набор только когда терминал попал в вьюпорт, один раз
   useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
       setCount(lines.length)
@@ -27,44 +31,48 @@ export default function TypedTerminal() {
       return
     }
 
-    let line = 0
-    let ch = 0
-    let typeTimer: number | undefined
-    let holdTimer: number | undefined
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setStarted(true)
+            observer.disconnect()
+          }
+        })
+      },
+      { threshold: 0.25 }
+    )
 
-    const startTyping = () => {
-      setCount(0)
-      setPartial(0)
-      setHold(false)
-      line = 0
-      ch = 0
-      typeTimer = window.setInterval(() => {
-        if (line >= lines.length) {
-          window.clearInterval(typeTimer)
-          setHold(true)
-          holdTimer = window.setTimeout(() => startTyping(), HOLD_MS)
-          return
-        }
-        ch += 1
-        if (ch > lines[line].length) {
-          line += 1
-          ch = 0
-          setCount(line)
-        } else {
-          setPartial(ch)
-        }
-      }, TYPE_SPEED)
-    }
-
-    startTyping()
-    return () => {
-      if (typeTimer) window.clearInterval(typeTimer)
-      if (holdTimer) window.clearTimeout(holdTimer)
-    }
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
+  // печатаем один раз: без зацикливания, без рестарта
+  useEffect(() => {
+    if (!started || finished) return
+
+    let line = 0
+    let ch = 0
+    const timer = window.setInterval(() => {
+      if (line >= lines.length) {
+        window.clearInterval(timer)
+        return
+      }
+      ch += 1
+      if (ch > lines[line].length) {
+        line += 1
+        ch = 0
+        setCount(line)
+      } else {
+        setPartial(ch)
+      }
+    }, TYPE_SPEED)
+
+    return () => window.clearInterval(timer)
+  }, [started, finished])
+
   return (
-    <div className="terminal mx-auto w-full max-w-3xl text-left">
+    <div ref={ref} className="terminal mx-auto w-full max-w-3xl text-left">
       <div className="flex items-center gap-2 border-b border-white/[0.06] px-5 py-3.5">
         <span className="h-2.5 w-2.5 rounded-full bg-ink-dim/25" />
         <span className="h-2.5 w-2.5 rounded-full bg-ink-dim/25" />
@@ -80,7 +88,7 @@ export default function TypedTerminal() {
             <span>{lineText}</span>
           </div>
         ))}
-        {!finished && (
+        {!finished && started && (
           <div className="flex gap-2.5">
             <span className="shrink-0 select-none text-chi">&gt;</span>
             <span>
@@ -89,7 +97,7 @@ export default function TypedTerminal() {
             </span>
           </div>
         )}
-        {finished && hold && (
+        {finished && (
           <div className="flex gap-2.5">
             <span className="shrink-0 select-none text-chi">&gt;</span>
             <span className="caret" />
@@ -99,3 +107,4 @@ export default function TypedTerminal() {
     </div>
   )
 }
+

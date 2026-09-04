@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Reveal from '@/components/Reveal'
 import { AnimatePresence, motion } from 'framer-motion'
 import { monoDigits } from '@/components/Text'
 import ReplyStatus from '@/components/ReplyStatus'
@@ -59,7 +60,7 @@ export default function Audit() {
   return (
     <section id="audit" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="mb-14 max-w-3xl">
+        <Reveal className="mb-14 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -74,7 +75,7 @@ export default function Audit() {
               'Вопросы фильтруют заявку: 3 ответа — и мы понимаем, ваш ли это проект. Без форм и бэкенда — заявка уходит в Telegram или на почту.'
             )}
           </p>
-        </div>
+        </Reveal>
 
           <div className="mt-10 max-w-xl border-l border-white/[0.08] pl-5">
             <p className="text-[15px] leading-relaxed text-ink">
@@ -83,112 +84,114 @@ export default function Audit() {
             <p className="mt-2 font-mono text-xs text-ink-dim">— Павел · Shamanchi Orbit</p>
           </div>
 
-        <div className="grid gap-x-16 gap-y-14 lg:grid-cols-2">
-          <div>
-            {questions.map((question, i) => {
-              const selected = answers[i]
-              return (
-                <div
-                  key={question.title}
-                  className="border-t border-white/[0.08] py-9 first:border-t-0 first:pt-0"
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim">
-                      Q{i + 1}
-                    </span>
-                    <span className="h-px flex-1 bg-white/[0.06]" />
+        <div className="glass-card rounded-lg p-6 sm:p-10 lg:p-12">
+          <div className="grid gap-x-16 gap-y-14 lg:grid-cols-2">
+            <div>
+              {questions.map((question, i) => {
+                const selected = answers[i]
+                return (
+                  <div
+                    key={question.title}
+                    className="border-t border-white/[0.08] py-9 first:border-t-0 first:pt-0"
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim">
+                        Q{i + 1}
+                      </span>
+                      <span className="h-px flex-1 bg-white/[0.06]" />
+                    </div>
+                    <h3 className="mb-6 mt-5 font-display text-xl font-semibold tracking-tight text-ink">
+                      {monoDigits(question.title)}?
+                    </h3>
+                    <div className="flex flex-wrap gap-2.5">
+                      {question.options.map((option) => {
+                        const active = selected === option
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            aria-pressed={active}
+                            onClick={() =>
+                              setAnswers((prev) => ({ ...prev, [i]: active ? '' : option }))
+                            }
+                            className={`rounded-sm border px-4 py-2.5 text-left text-sm transition-colors ${
+                              active
+                                ? 'border-white/[0.35] text-ink'
+                                : 'border-white/[0.1] text-ink-dim hover:border-white/[0.25] hover:text-ink'
+                            }`}
+                          >
+                            {option}
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
-                  <h3 className="mb-6 mt-5 font-display text-xl font-semibold tracking-tight text-ink">
-                    {monoDigits(question.title)}?
-                  </h3>
-                  <div className="flex flex-wrap gap-2.5">
-                    {question.options.map((option) => {
-                      const active = selected === option
-                      return (
-                        <button
-                          key={option}
-                          type="button"
-                          aria-pressed={active}
-                          onClick={() =>
-                            setAnswers((prev) => ({ ...prev, [i]: active ? '' : option }))
-                          }
-                          className={`rounded border px-4 py-2.5 text-left text-sm transition-colors ${
-                            active
-                              ? 'border-white/[0.35] text-ink'
-                              : 'border-white/[0.1] text-ink-dim hover:border-white/[0.25] hover:text-ink'
-                          }`}
+                )
+              })}
+            </div>
+
+            <div className="lg:pt-2">
+              <ReplyStatus />
+              <p className="mt-3 font-mono text-xs text-ink-dim">заполнено: {answeredCount}/3</p>
+
+              <AnimatePresence>
+                {complete && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="mt-6"
+                  >
+                    <div className="terminal p-6 sm:p-7">
+                      <div className="flex items-center gap-2.5 border-b border-white/[0.06] pb-3">
+                        <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
+                        <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
+                        <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
+                        <span className="ml-3 font-mono text-xs text-ink-dim">orbit@audit — summary</span>
+                      </div>
+                      <pre className="mt-4 overflow-x-auto whitespace-pre-wrap font-mono text-[13px] leading-6 text-ink">
+                        {summary}
+                      </pre>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <a
+                          href={telegramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-audit px-6 py-3 text-sm"
                         >
-                          {option}
+                          Отправить в Telegram
+                        </a>
+                        <a
+                          href={emailUrl}
+                          className="btn-ghost px-6 py-3 text-sm text-ink-dim hover:text-ink"
+                        >
+                          Написать на почту
+                        </a>
+                        <button
+                          type="button"
+                          onClick={copySummary}
+                          className="btn-ghost px-6 py-3 text-sm text-ink-dim hover:text-ink"
+                        >
+                          {copied ? 'Скопировано' : 'Скопировать'}
                         </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="lg:pt-2">
-            <ReplyStatus />
-            <p className="mt-3 font-mono text-xs text-ink-dim">заполнено: {answeredCount}/3</p>
-
-            <AnimatePresence>
-              {complete && (
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="mt-6"
-                >
-                  <div className="terminal p-6 sm:p-7">
-                    <div className="flex items-center gap-2.5 border-b border-white/[0.06] pb-3">
-                      <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
-                      <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
-                      <span className="h-2 w-2 rounded-full bg-ink-dim/25" />
-                      <span className="ml-3 font-mono text-xs text-ink-dim">orbit@audit — summary</span>
+                      </div>
+                      <p className="mt-5 font-mono text-xs text-ink-dim">
+                        ответ — в течение дня. @PavelYrevichh · lietman46@mail.com
+                      </p>
                     </div>
-                    <pre className="mt-4 overflow-x-auto whitespace-pre-wrap font-mono text-[13px] leading-6 text-ink">
-                      {summary}
-                    </pre>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <a
-                        href={telegramUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-audit rounded px-6 py-3 text-sm"
-                      >
-                        Отправить в Telegram
-                      </a>
-                      <a
-                        href={emailUrl}
-                        className="btn-ghost rounded px-6 py-3 text-sm text-ink-dim hover:text-ink"
-                      >
-                        Написать на почту
-                      </a>
-                      <button
-                        type="button"
-                        onClick={copySummary}
-                        className="btn-ghost rounded px-6 py-3 text-sm text-ink-dim hover:text-ink"
-                      >
-                        {copied ? 'Скопировано' : 'Скопировать'}
-                      </button>
-                    </div>
-                    <p className="mt-5 font-mono text-xs text-ink-dim">
-                      ответ — в течение дня. @PavelYrevichh · lietman46@mail.com
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {!complete && (
-              <p className="mt-6 text-sm leading-relaxed text-ink-dim">
-                {monoDigits(
-                  'Никаких баз данных. После 3 ответов вы увидите готовое сообщение для Telegram или почты.'
+                  </motion.div>
                 )}
-              </p>
-            )}
+              </AnimatePresence>
+
+              {!complete && (
+                <p className="mt-6 text-sm leading-relaxed text-ink-dim">
+                  {monoDigits(
+                    'Никаких баз данных. После 3 ответов вы увидите готовое сообщение для Telegram или почты.'
+                  )}
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div className="mt-20 max-w-3xl border-t border-white/[0.06] pt-9">

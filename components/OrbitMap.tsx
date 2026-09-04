@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Reveal from '@/components/Reveal'
 import { motion } from 'framer-motion'
 
 type NodeSpec = { id: string; label: string; x: number; y: number }
@@ -111,7 +112,7 @@ export default function OrbitMap() {
     <section id="orbit-map" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
         <div className="mb-14 flex flex-wrap items-end justify-between gap-8">
-          <div className="max-w-3xl">
+          <Reveal className="max-w-3xl">
             <div className="flex items-center gap-4">
               <span className="mark" />
               <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -125,7 +126,7 @@ export default function OrbitMap() {
               Пять систем, которые держат данные при себе. Затем — одна орбита,
               по которой поток движется без рук.
             </p>
-          </div>
+          </Reveal>
           <div className="flex items-center gap-2" role="group" aria-label="Переключение диаграммы">
             <button type="button" onClick={() => setFlow(false)} aria-pressed={!flow} className={toggleClass(!flow)}>
               Разорванные узлы

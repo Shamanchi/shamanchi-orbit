@@ -1,4 +1,5 @@
 import { monoDigits } from '@/components/Text'
+import Reveal from '@/components/Reveal'
 
 const forbidden = [
   {
@@ -33,7 +34,7 @@ export default function Principles() {
   return (
     <section id="principles" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="mb-16 max-w-3xl">
+        <Reveal className="mb-16 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -43,11 +44,11 @@ export default function Principles() {
           <h2 className="mt-7 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Три запрета. Без них система не выживет
           </h2>
-        </div>
+        </Reveal>
 
         <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
           {forbidden.map((item) => (
-            <article key={item.num} className="card-ghost p-8 sm:p-9">
+            <article key={item.num} className="glass-card rounded-md p-8 sm:p-9">
               <div className="flex items-center gap-3">
                 <span className="font-mono text-sm text-ink-dim">{item.num}</span>
                 <span className="h-px flex-1 bg-white/[0.08]" />
@@ -77,7 +78,7 @@ export default function Principles() {
             </ul>
           </div>
 
-          <div className="border border-white/[0.08] p-8 sm:p-10">
+          <div className="glass-card rounded-md p-8 sm:p-10">
             <div className="flex items-center gap-3">
               <span className="font-mono text-sm text-ink-dim">×</span>
               <h3 className="font-display text-2xl font-semibold tracking-tight text-ink">

@@ -1,4 +1,6 @@
 import { monoDigits } from '@/components/Text'
+import Reveal from '@/components/Reveal'
+import Magnetic from '@/components/Magnetic'
 
 const plans = [
   {
@@ -47,7 +49,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="mb-20 max-w-3xl">
+        <Reveal className="mb-20 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
@@ -60,16 +62,14 @@ export default function Pricing() {
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-dim">
             Без залипания на недели. Сначала находим точку рычага, потом называем цифру.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`relative flex flex-col p-9 ${
-                plan.recommended
-                  ? 'border border-[rgba(0,212,255,0.45)] lg:-mt-6 lg:mb-6'
-                  : 'card-ghost'
+              className={`glass-card flex flex-col rounded-md p-9 ${
+                plan.recommended ? 'orbit-halo lg:-mt-6 lg:mb-6' : ''
               }`}
             >
               <div className="flex items-start justify-between gap-4">
@@ -93,14 +93,16 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#audit"
-                className={`mt-10 rounded px-6 py-3 text-center text-sm ${
-                  plan.recommended ? 'btn-audit' : 'btn-ghost text-ink-dim hover:text-ink'
-                }`}
-              >
-                Обсудить
-              </a>
+              <Magnetic className="mt-10">
+                <a
+                  href="#audit"
+                  className={`block w-full px-6 py-3 text-center text-sm ${
+                    plan.recommended ? 'btn-audit' : 'btn-ghost text-ink-dim hover:text-ink'
+                  }`}
+                >
+                  Обсудить
+                </a>
+              </Magnetic>
             </article>
           ))}
         </div>

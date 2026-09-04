@@ -1,5 +1,6 @@
 import SpaceBackdrop from '@/components/SpaceBackdrop'
 import TypedTerminal from '@/components/TypedTerminal'
+import HeroHeading from '@/components/HeroHeading'
 
 export default function Hero() {
   return (
@@ -15,9 +16,7 @@ export default function Hero() {
           <p className="font-mono text-xs uppercase tracking-[0.28em] text-ink-dim">
             [ scan ] скрытые орбиты бизнеса
           </p>
-          <h1 className="mt-7 font-display text-[40px] font-semibold leading-[1.06] tracking-tight text-ink sm:text-5xl xl:text-[62px]">
-            Большинство бизнесов управляет процессами, которых не существует
-          </h1>
+          <HeroHeading />
           <p className="mt-7 max-w-xl text-[17px] leading-relaxed text-ink-dim">
             Мы находим скрытые орбиты и запускаем их. Ручной труд — симптом
             разрыва между системами. Сначала археология, потом автоматизация.
