@@ -72,7 +72,7 @@ export default function TypedTerminal() {
   }, [started, finished])
 
   return (
-    <div ref={ref} className="terminal mx-auto w-full max-w-3xl text-left">
+    <div ref={ref} className="terminal mx-auto w-full max-w-3xl rounded-sm text-left">
       <div className="flex items-center gap-2 border-b border-white/[0.06] px-5 py-3.5">
         <span className="h-2.5 w-2.5 rounded-full bg-ink-dim/25" />
         <span className="h-2.5 w-2.5 rounded-full bg-ink-dim/25" />
