@@ -29,7 +29,7 @@ export default function Hero() {
             </a>
             <a
               href="#physics"
-              className="btn-ghost rounded px-8 py-3.5 text-[15px] text-ink-dim hover:text-ink"
+              className="btn-phantom rounded px-8 py-3.5 text-[15px] text-ink-dim hover:text-ink"
             >
               Физика Orbit
             </a>
