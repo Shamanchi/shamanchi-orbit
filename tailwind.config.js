@@ -8,29 +8,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        orbit: {
-          bg: '#0a0e1a',
-          card: '#111827',
-          border: '#1f2937',
-          cyan: '#06b6d4',
-          green: '#10b981',
-          accent: '#22d3ee',
-          muted: '#6b7280',
-        }
+        space: '#0B1120',
+        ink: {
+          DEFAULT: '#E6EDF3',
+          dim: '#8B98A9',
+        },
+        chi: '#00D4FF',
       },
       fontFamily: {
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['"Space Grotesk"', 'Inter', 'ui-sans-serif', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
       },
-      animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-      },
-      keyframes: {
-        glow: {
-          '0%': { boxShadow: '0 0 5px #06b6d4, 0 0 10px #06b6d4' },
-          '100%': { boxShadow: '0 0 20px #06b6d4, 0 0 30px #06b6d4' },
-        }
-      }
     },
   },
   plugins: [],

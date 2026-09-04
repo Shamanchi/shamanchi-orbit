@@ -1,101 +1,66 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { Search, Compass, Zap, ShieldCheck, Rocket } from 'lucide-react'
+import { monoDigits } from '@/components/Text'
 
 const steps = [
   {
     num: '01',
-    icon: Search,
-    title: 'Аудит',
-    desc: 'Находим узкие места. 30 минут, бесплатно. Вы получаете карту боли и приоритетов.',
-    time: '30 мин',
+    title: 'Археология',
+    text: '30 минут аудита: карта процессов, разрывы между системами, точка рычага. Ни одной строки кода до карты.',
   },
   {
     num: '02',
-    icon: Compass,
-    title: 'Архитектура',
-    desc: 'Проектируем масштабируемое решение. Закладываем рост сразу, не переписываем потом.',
-    time: '1 день',
+    title: 'Проектирование',
+    text: 'Одна точка рычага — 20% усилий, которые дают 80% результата. Схема орбиты до реализации.',
   },
   {
     num: '03',
-    icon: Zap,
-    title: 'AI-ускоренная разработка',
-    desc: 'Быстро, но с моим контролем качества и безопасности. Код, который читается, а не «работает somehow».',
-    time: '2-5 дней',
+    title: 'Орбита',
+    text: 'Сборка системы: данные начинают двигаться по восстановленному потоку. Код читаемый, документация рядом.',
   },
   {
     num: '04',
-    icon: ShieldCheck,
-    title: 'Тестирование + fallback',
-    desc: 'Обработка ошибок, логирование, fallback-файлы. Ничего не падает в 3 ночи без вашего ведома.',
-    time: '1 день',
+    title: 'Документация',
+    text: 'Система понятна через 6 месяцев без нас. Документируем для вашего будущего себя.',
   },
   {
     num: '05',
-    icon: Rocket,
-    title: 'Деплой + документация',
-    desc: 'AGENT.md + README + отчёты. Вы получаете продукт, а не «скрипт на коленке».',
-    time: '1 день',
+    title: 'Рост',
+    text: 'Освобождённое внимание возвращается в бизнес. Архитектура рассчитана на рост до 10x без новых узких мест.',
   },
 ]
 
 export default function Process() {
   return (
-    <section id="process" className="py-24 relative bg-orbit-card/30">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orbit-cyan/10 border border-orbit-cyan/20 text-orbit-cyan text-xs font-mono mb-4">
-            <Zap size={12} />
-            Как это работает
+    <section id="process" className="relative py-28">
+      <div className="mx-auto w-full max-w-[1200px] px-6">
+        <div className="mb-10 max-w-3xl">
+          <div className="flex items-center gap-4">
+            <span className="mark" />
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
+              03 · процесс
+            </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            От хаоса к <span className="gradient-text">системе</span> за 5
-            шагов
+          <h2 className="mt-7 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            Пять шагов. От карты процесса до запущенной орбиты
           </h2>
-          <p className="text-orbit-muted max-w-2xl mx-auto">
-            Не «напишу скрипт и исчезну». А процесс, в котором вы всегда знаете,
-            на каком этапе проект.
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="space-y-4">
+        <div>
           {steps.map((step, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="orbit-card rounded-xl p-6 flex flex-col sm:flex-row items-start gap-6 group"
+            <div
+              key={step.num}
+              id={`process-step-${i + 1}`}
+              className="grid grid-cols-12 items-baseline gap-x-6 border-b border-white/[0.06] py-9 first:border-t"
             >
-              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-orbit-cyan/10 border border-orbit-cyan/20 flex items-center justify-center">
-                <step.icon className="text-orbit-cyan" size={24} />
+              <div className="col-span-2 font-mono text-base text-ink-dim md:col-span-1">
+                {step.num}
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xs font-mono text-orbit-cyan">
-                    {step.num}
-                  </span>
-                  <h3 className="text-lg font-semibold text-white">
-                    {step.title}
-                  </h3>
-                  <span className="ml-auto text-xs font-mono text-orbit-muted bg-orbit-bg px-2 py-1 rounded">
-                    {step.time}
-                  </span>
-                </div>
-                <p className="text-orbit-muted text-sm leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-            </motion.div>
+              <h3 className="col-span-10 font-display text-2xl font-semibold tracking-tight text-ink md:col-span-4">
+                {step.title}
+              </h3>
+              <p className="col-span-12 mt-4 max-w-xl text-[15px] leading-relaxed text-ink-dim md:col-span-5 md:col-start-8 md:mt-0">
+                {monoDigits(step.text)}
+              </p>
+            </div>
           ))}
         </div>
       </div>

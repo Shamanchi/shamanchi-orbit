@@ -1,47 +1,32 @@
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import Pain from '@/components/Pain'
-import LiveStats from '@/components/LiveStats'
-import RoundTable from '@/components/RoundTable'
-import Cases from '@/components/Cases'
-import Testimonials from '@/components/Testimonials'
-import ComparisonTable from '@/components/ComparisonTable'
-import About from '@/components/About'
-import EmailCapture from '@/components/EmailCapture'
-import FOMO from '@/components/FOMO'
+import Physics from '@/components/Physics'
+import OrbitMap from '@/components/OrbitMap'
 import Process from '@/components/Process'
-import ROICalculator from '@/components/ROICalculator'
 import Works from '@/components/Works'
-import WhyMe from '@/components/WhyMe'
+import Metrics from '@/components/Metrics'
+import Principles from '@/components/Principles'
 import Pricing from '@/components/Pricing'
+import Audit from '@/components/Audit'
 import Footer from '@/components/Footer'
-import OrbitalSystem from '@/components/OrbitalSystem'
-import CursorGlow from '@/components/CursorGlow'
-import Analytics from '@/components/Analytics'
+import MotionProvider from '@/components/MotionProvider'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-orbit-bg text-white overflow-x-hidden relative">
-      <Analytics />
-      <OrbitalSystem />
-      <CursorGlow />
+    <MotionProvider>
       <Navbar />
-      <Hero />
-      <Pain />
-      <LiveStats />
-      <RoundTable />
-      <Cases />
-      <Testimonials />
-      <ComparisonTable />
-      <About />
-      <EmailCapture />
-      <FOMO />
-      <Process />
-      <ROICalculator />
-      <Works />
-      <WhyMe />
-      <Pricing />
+      <main className="relative overflow-x-clip">
+        <Hero />
+        <Physics />
+        <OrbitMap />
+        <Process />
+        <Works />
+        <Metrics />
+        <Principles />
+        <Pricing />
+        <Audit />
+      </main>
       <Footer />
-    </main>
+    </MotionProvider>
   )
 }

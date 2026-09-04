@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --orbit-bg: #0a0e1a;
-  --orbit-card: #111827;
-  --orbit-border: #1f2937;
-  --orbit-cyan: #06b6d4;
-  --orbit-green: #10b981;
+  --space: #0B1120;
+  --ink: #E6EDF3;
+  --ink-dim: #8B98A9;
+  --chi: #00D4FF;
+  --ghost: rgba(0, 212, 255, 0.12);
+  --ghost-soft: rgba(0, 212, 255, 0.35);
 }
 
 html {
@@ -15,62 +16,147 @@ html {
 }
 
 body {
-  background-color: var(--orbit-bg);
-  color: #e5e7eb;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--space);
+  color: var(--ink);
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background-color: rgba(6, 182, 212, 0.3);
-  color: #fff;
+  background: rgba(0, 212, 255, 0.22);
+  color: #ffffff;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--orbit-bg);
+  background: #0B1120;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--orbit-border);
-  border-radius: 4px;
+  background: rgba(139, 152, 169, 0.25);
+  border: 3px solid #0B1120;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--orbit-cyan);
+  background: rgba(0, 212, 255, 0.35);
 }
 
-/* Terminal cursor blink */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-.cursor-blink {
-  animation: blink 1s step-end infinite;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #22d3ee 0%, #10b981 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Visible 12-column grid overlay */
+.grid-12 {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 212, 255, 0.055) 1px,
+    transparent 1px
+  );
+  background-size: calc(100% / 12) 100%;
 }
 
-/* Glow effect */
-.glow-cyan {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+/* Terminal block */
+.terminal {
+  border: 1px solid var(--ghost);
+  background: rgba(11, 17, 32, 0.78);
+  border-radius: 12px;
+  box-shadow: 0 30px 90px rgba(2, 6, 16, 0.55);
 }
 
-/* Card hover */
-.orbit-card {
-  background: rgba(17, 24, 39, 0.8);
-  border: 1px solid rgba(31, 41, 55, 0.8);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+/* Cards without fills */
+.card-ghost {
+  border: 1px solid var(--ghost);
+  background: transparent;
+  transition: border-color 0.25s ease;
 }
-.orbit-card:hover {
-  border-color: rgba(6, 182, 212, 0.4);
-  box-shadow: 0 0 30px rgba(6, 182, 212, 0.1);
-  transform: translateY(-2px);
+.card-ghost:hover {
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+/* Buttons: outline only */
+.btn-audit {
+  border: 1px solid var(--ghost-soft);
+  color: var(--chi);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn-audit:hover {
+  background: rgba(0, 212, 255, 0.06);
+  border-color: rgba(0, 212, 255, 0.7);
+}
+
+.btn-ghost {
+  border: 1px solid var(--ghost);
+  color: var(--ink);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--ghost-soft);
+  background: rgba(0, 212, 255, 0.04);
+}
+
+.btn-dim {
+  border: 1px solid var(--ghost);
+  color: var(--ink-dim);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.btn-dim:hover {
+  border-color: rgba(0, 212, 255, 0.3);
+  color: var(--ink);
+}
+
+/* Ghost corner mark for sections */
+.mark {
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+}
+
+/* Static stars fallback */
+.stars-static {
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(230, 237, 243, 0.9) 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 68%, rgba(230, 237, 243, 0.6) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 37% 12%, rgba(230, 237, 243, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 46% 44%, rgba(230, 237, 243, 0.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 55% 82%, rgba(230, 237, 243, 0.7) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 63% 30%, rgba(230, 237, 243, 0.85) 50%, transparent 51%),
+    radial-gradient(1px 1px at 71% 58%, rgba(230, 237, 243, 0.55) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 16%, rgba(230, 237, 243, 0.75) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 86% 74%, rgba(230, 237, 243, 0.9) 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 38%, rgba(230, 237, 243, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 18% 88%, rgba(230, 237, 243, 0.65) 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 52%, rgba(230, 237, 243, 0.5) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 48% 94%, rgba(230, 237, 243, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 96% 6%, rgba(230, 237, 243, 0.7) 50%, transparent 51%);
+  background-color: #0B1120;
+}
+
+/* Blinking caret inside the terminal */
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--chi);
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
+}
+
+/* Reduced motion: kill every animation */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

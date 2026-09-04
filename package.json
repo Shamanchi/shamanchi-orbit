@@ -9,11 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@tsparticles/preset-stars": "^4.4.0",
+    "@tsparticles/react": "^4.4.0",
+    "@types/three": "^0.185.4",
+    "framer-motion": "^11.3.0",
+    "lucide-react": "^0.400.0",
     "next": "14.2.5",
+    "quarks.r3f": "^0.17.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "framer-motion": "^11.3.0",
-    "lucide-react": "^0.400.0"
+    "three": "^0.185.1",
+    "three.quarks": "^0.17.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
