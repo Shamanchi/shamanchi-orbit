@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 import type { PointerEvent as ReactPointerEvent, ReactNode } from 'react'
 
 export default function Magnetic({
@@ -14,7 +15,7 @@ export default function Magnetic({
   strength?: number
 }) {
   const ref = useRef<HTMLDivElement | null>(null)
-  const reducedMotion = useReducedMotion()
+  const reducedMotion = usePrefersReducedMotion()
   const [finePointer, setFinePointer] = useState(false)
 
   const x = useMotionValue(0)

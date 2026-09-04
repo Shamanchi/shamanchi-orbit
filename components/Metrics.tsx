@@ -2,8 +2,9 @@
 
 import dynamic from 'next/dynamic'
 import Reveal from '@/components/Reveal'
+import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 const QuarksBurst = dynamic(() => import('@/components/MetricsQuarks'), {
   ssr: false,
@@ -52,7 +53,7 @@ const metrics = [
 function MetricValue({ metric }: { metric: (typeof metrics)[number] }) {
   const ref = useRef<HTMLDivElement | null>(null)
   const inView = useInView(ref, { once: true, amount: 0.6 })
-  const reducedMotion = useReducedMotion()
+  const reducedMotion = usePrefersReducedMotion()
   const [value, setValue] = useState(metric.target)
 
   useEffect(() => {
@@ -91,6 +92,7 @@ function MetricValue({ metric }: { metric: (typeof metrics)[number] }) {
 export default function Metrics() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [burst, setBurst] = useState(false)
+  const reduce = usePrefersReducedMotion()
 
   useEffect(() => {
     const el = sectionRef.current
@@ -146,24 +148,33 @@ export default function Metrics() {
 
         <div className="relative border-t border-white/[0.06] pt-16 lg:pt-20">
           <div className="grid grid-cols-1 gap-y-20 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-0">
-            {metrics.map((metric) => (
-              <motion.div
-                key={metric.key}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.55, ease: 'easeOut' }}
-              >
-                <MetricValue metric={metric} />
-                <div className="mt-6 max-w-[230px] text-base leading-snug text-ink-dim">
-                  {metric.label}
-                </div>
-                <div className="mt-3 font-mono text-[11px] text-ink-dim/70">
-                  {'// '}
-                  {metric.basis}
-                </div>
-              </motion.div>
-            ))}
+            {metrics.map((metric) => {
+              const content = (
+                <>
+                  <MetricValue metric={metric} />
+                  <div className="mt-6 max-w-[230px] text-base leading-snug text-ink-dim">
+                    {metric.label}
+                  </div>
+                  <div className="mt-3 font-mono text-[11px] text-ink-dim/70">
+                    {'// '}
+                    {metric.basis}
+                  </div>
+                </>
+              )
+              return reduce ? (
+                <div key={metric.key}>{content}</div>
+              ) : (
+                <motion.div
+                  key={metric.key}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.55, ease: 'easeOut' }}
+                >
+                  {content}
+                </motion.div>
+              )
+            })}
           </div>
         </div>
 

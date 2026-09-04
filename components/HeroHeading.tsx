@@ -1,7 +1,8 @@
 'use client'
 
 import { Fragment } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 
 const TITLE = 'Большинство бизнесов управляет процессами, которых не существует'
 const WORDS = TITLE.split(' ')
@@ -9,7 +10,7 @@ const H1_CLASS =
   'mt-7 font-display text-[40px] font-semibold leading-[1.06] tracking-tight text-ink sm:text-5xl xl:text-[62px]'
 
 export default function HeroHeading() {
-  const reduce = useReducedMotion()
+  const reduce = usePrefersReducedMotion()
 
   if (reduce) {
     return <h1 className={H1_CLASS}>{TITLE}</h1>

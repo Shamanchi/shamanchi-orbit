@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 
 const words = ['археология', 'точка рычага', 'орбита', 'документация', 'рост']
 const REPEATS = 8
@@ -25,6 +26,21 @@ function Run() {
 }
 
 export default function Marquee() {
+  const reduce = usePrefersReducedMotion()
+
+  if (reduce) {
+    return (
+      <div
+        aria-hidden="true"
+        className="relative overflow-hidden border-y border-white/[0.06] py-5 sm:py-6"
+      >
+        <div className="flex w-max">
+          <Run />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       aria-hidden="true"
