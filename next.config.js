@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  distDir: 'dist',
+  distDir: process.env.DEV_DIST ? '.next-dev' : 'dist',
   basePath: '/shamanchi-orbit',
   images: {
     unoptimized: true,

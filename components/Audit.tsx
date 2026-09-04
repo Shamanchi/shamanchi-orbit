@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { monoDigits } from '@/components/Text'
+import ReplyStatus from '@/components/ReplyStatus'
 
 const questions: Array<{ title: string; options: string[] }> = [
   {
@@ -42,6 +43,19 @@ export default function Audit() {
     'Аудит орбиты — Shamanchi Orbit'
   )}&body=${encodeURIComponent(summary)}`
 
+  const [copied, setCopied] = useState(false)
+
+  const copySummary = () => {
+    if (!summary) return
+    navigator.clipboard
+      .writeText(summary)
+      .then(() => {
+        setCopied(true)
+        window.setTimeout(() => setCopied(false), 1800)
+      })
+      .catch(() => {})
+  }
+
   return (
     <section id="audit" className="relative py-28">
       <div className="mx-auto w-full max-w-[1200px] px-6">
@@ -61,6 +75,13 @@ export default function Audit() {
             )}
           </p>
         </div>
+
+          <div className="mt-10 max-w-xl border-l border-white/[0.08] pl-5">
+            <p className="text-[15px] leading-relaxed text-ink">
+              Аудит веду лично. 30 минут, без записи, без продажи в лоб.
+            </p>
+            <p className="mt-2 font-mono text-xs text-ink-dim">— Павел · Shamanchi Orbit</p>
+          </div>
 
         <div className="grid gap-x-16 gap-y-14 lg:grid-cols-2">
           <div>
@@ -108,7 +129,8 @@ export default function Audit() {
           </div>
 
           <div className="lg:pt-2">
-            <p className="font-mono text-xs text-ink-dim">заполнено: {answeredCount}/3</p>
+            <ReplyStatus />
+            <p className="mt-3 font-mono text-xs text-ink-dim">заполнено: {answeredCount}/3</p>
 
             <AnimatePresence>
               {complete && (
@@ -144,6 +166,13 @@ export default function Audit() {
                       >
                         Написать на почту
                       </a>
+                      <button
+                        type="button"
+                        onClick={copySummary}
+                        className="btn-ghost rounded px-6 py-3 text-sm text-ink-dim hover:text-ink"
+                      >
+                        {copied ? 'Скопировано' : 'Скопировать'}
+                      </button>
                     </div>
                     <p className="mt-5 font-mono text-xs text-ink-dim">
                       ответ — в течение дня. @PavelYrevichh · lietman46@mail.com
@@ -162,7 +191,29 @@ export default function Audit() {
             )}
           </div>
         </div>
+        <div className="mt-20 max-w-3xl border-t border-white/[0.06] pt-9">
+          <p className="text-[15px] leading-relaxed text-ink-dim">
+            Не готовы к аудиту прямо сейчас — напишите «карта» в Telegram или на почту. Пришлю карту разрывов для вашей ниши. Без 30 минут и обязательств.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs text-ink-dim">
+            <a
+              href="https://t.me/PavelYrevichh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-ink"
+            >
+              @PavelYrevichh — напишите «карта»
+            </a>
+            <a
+              href="mailto:lietman46@mail.com?subject=%D0%9A%D0%B0%D1%80%D1%82%D0%B0%20%D1%80%D0%B0%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B2"
+              className="transition-colors hover:text-ink"
+            >
+              lietman46@mail.com — тема «карта разрывов»
+            </a>
+          </div>
+        </div>
       </div>
+
     </section>
   )
 }

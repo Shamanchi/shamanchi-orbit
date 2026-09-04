@@ -72,14 +72,16 @@ export default function Pricing() {
                   : 'card-ghost'
               }`}
             >
-              {plan.recommended && (
-                <span className="absolute right-7 top-7 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim">
-                  основная орбита
-                </span>
-              )}
-              <h3 className="font-display text-xl font-semibold tracking-tight text-ink">
-                {plan.name}
-              </h3>
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="font-display text-xl font-semibold tracking-tight text-ink">
+                  {plan.name}
+                </h3>
+                {plan.recommended && (
+                  <span className="shrink-0 pt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim">
+                    основная орбита
+                  </span>
+                )}
+              </div>
               <div className="mt-8 font-mono text-3xl text-ink">{plan.price}</div>
               <div className="mt-2 font-mono text-xs text-ink-dim">{plan.note}</div>
               <p className="mt-6 text-sm leading-relaxed text-ink-dim">{monoDigits(plan.desc)}</p>

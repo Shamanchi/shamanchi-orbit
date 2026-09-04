@@ -10,10 +10,10 @@ const QuarksBurst = dynamic(() => import('@/components/MetricsQuarks'), {
 })
 
 const items = [
-  { value: '47+', label: 'орбит запущено' },
-  { value: '1200+', label: 'часов внимания возвращено' },
-  { value: '0', label: 'критических коллапсов' },
-  { value: '78%', label: 'возвращаются за следующей орбитой' },
+  { value: '47+', label: 'орбит запущено', basis: 'накопительно' },
+  { value: '1200+', label: 'часов внимания возвращено', basis: 'за 2 года' },
+  { value: '0', label: 'критических коллапсов', basis: 'благодаря резервным орбитам' },
+  { value: '78%', label: 'возвращаются за следующей орбитой', basis: 'из прошедших аудит' },
 ]
 
 export default function Metrics() {
@@ -52,40 +52,53 @@ export default function Metrics() {
   }, [])
 
   return (
-    <section id="metrics" ref={sectionRef} className="relative py-32">
+    <section id="metrics" ref={sectionRef} className="relative overflow-hidden py-40 lg:py-52">
       <div className="relative mx-auto w-full max-w-[1200px] px-6">
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,10,20,0.6)_100%)]"
+          aria-hidden="true"
+        />
         <div className="grid-12" aria-hidden="true" />
 
-        <div className="mb-16 max-w-3xl">
+        <div className="relative mb-24 max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="mark" />
             <span className="font-mono text-xs uppercase tracking-[0.25em] text-ink-dim">
               05 · метрики
             </span>
           </div>
-          <h2 className="mt-7 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+          <h2 className="mt-6 font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
             Телеметрия, а не реклама
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4">
-          {items.map((item) => (
-            <motion.div
-              key={item.value}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="border-t border-white/[0.1] pt-7"
-            >
-              <div className="font-mono text-4xl text-chi sm:text-5xl">{item.value}</div>
-              <div className="mt-4 text-sm leading-relaxed text-ink-dim">{item.label}</div>
-            </motion.div>
-          ))}
+        <div className="relative border-t border-white/[0.06] pt-16 lg:pt-20">
+          <div className="grid grid-cols-1 gap-y-20 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-0">
+            {items.map((item) => (
+              <motion.div
+                key={item.value}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.55, ease: 'easeOut' }}
+              >
+                <div className="font-mono text-[46px] leading-none text-chi sm:text-6xl xl:text-7xl">
+                  {item.value}
+                </div>
+                <div className="mt-6 max-w-[230px] text-base leading-snug text-ink-dim">
+                  {item.label}
+                </div>
+                <div className="mt-3 font-mono text-[11px] text-ink-dim/70">
+                  {'// '}
+                  {item.basis}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        <p className="mt-16 font-mono text-xs text-ink-dim">
-          // без округления в сторону маркетинга
+        <p className="relative mt-24 font-mono text-xs text-ink-dim">
+          {'// без округления в сторону маркетинга'}
         </p>
 
         {burst && (

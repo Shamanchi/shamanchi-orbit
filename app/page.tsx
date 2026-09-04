@@ -4,6 +4,7 @@ import Physics from '@/components/Physics'
 import OrbitMap from '@/components/OrbitMap'
 import Process from '@/components/Process'
 import Works from '@/components/Works'
+import Proof from '@/components/Proof'
 import Metrics from '@/components/Metrics'
 import Principles from '@/components/Principles'
 import Pricing from '@/components/Pricing'
@@ -21,6 +22,7 @@ export default function Home() {
         <OrbitMap />
         <Process />
         <Works />
+        <Proof />
         <Metrics />
         <Principles />
         <Pricing />

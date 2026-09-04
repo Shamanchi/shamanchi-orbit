@@ -173,13 +173,29 @@ export default function OrbitMap() {
                 strokeWidth={1.2}
               />
               {animate && (
-                <circle r={4.5} fill="#00D4FF">
-                  <animateMotion
-                    dur="9s"
-                    repeatCount="indefinite"
-                    path="M 400 84 A 262 143 0 1 1 399.9 84"
-                  />
-                </circle>
+                <>
+                  <circle r={4.6} fill="#00D4FF">
+                    <animateMotion
+                      dur="9s"
+                      repeatCount="indefinite"
+                      path="M 400 84 A 262 143 0 1 1 399.9 84"
+                    />
+                  </circle>
+                  {[
+                    { begin: -0.8, r: 3, opacity: 0.4 },
+                    { begin: -1.7, r: 2.4, opacity: 0.26 },
+                    { begin: -2.8, r: 2, opacity: 0.16 },
+                  ].map((p) => (
+                    <circle key={p.begin} r={p.r} fill="#00D4FF" opacity={p.opacity}>
+                      <animateMotion
+                        dur="9s"
+                        begin={`-${p.begin}s`}
+                        repeatCount="indefinite"
+                        path="M 400 84 A 262 143 0 1 1 399.9 84"
+                      />
+                    </circle>
+                  ))}
+                </>
               )}
             </motion.g>
 

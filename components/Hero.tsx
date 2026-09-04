@@ -42,9 +42,6 @@ export default function Hero() {
         <TypedTerminal />
       </div>
 
-      <div className="pointer-events-none absolute bottom-7 right-7 z-10 hidden font-mono text-xs text-ink-dim md:block">
-        <span className="text-chi">47+</span> орбит запущено
-      </div>
     </section>
   )
 }

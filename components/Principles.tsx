@@ -16,10 +16,10 @@ const forbidden = [
 ]
 
 const fit = [
-  'Видите ручной труд как симптом, а не как обстоятельство',
+  'Держите таблицу, которую боитесь удалять: «вдруг что-то сломается»',
+  'Поняли, что процесс живёт в голове менеджера, только когда он ушёл в отпуск',
   'Готовы отдать 30 минут на аудит до оценки и кода',
-  'Хотите, чтобы система пережила ваш отпуск и следующие 6 месяцев',
-  'Принимаете, что процесс меняется раньше инструмента',
+  'Хотите, чтобы система работала, пока вы не смотрите на неё',
 ]
 
 const notFit = [
@@ -62,7 +62,7 @@ export default function Principles() {
         <div className="mt-28 grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <div className="flex items-center gap-3">
-              <span className="text-ink font-mono text-sm">+</span>
+              <span className="font-mono text-sm text-ink">+</span>
               <h3 className="font-display text-2xl font-semibold tracking-tight text-ink">
                 Кто входит
               </h3>
@@ -95,6 +95,14 @@ export default function Principles() {
                 </li>
               ))}
             </ul>
+            <div className="mt-10 border-t border-white/[0.08] pt-7">
+              <a
+                href="#audit"
+                className="text-[15px] leading-relaxed text-ink-dim transition-colors hover:text-ink"
+              >
+                Узнали себя? Аудит покажет, есть ли обратный путь
+              </a>
+            </div>
           </div>
         </div>
       </div>
