@@ -11,7 +11,6 @@ export default function Hero() {
       <SpaceBackdrop />
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-12 gap-x-6 px-6">
-        <div className="grid-12" aria-hidden="true" />
         <div className="col-span-12 pt-4 lg:col-span-8 xl:col-span-7">
           <p className="font-mono text-xs uppercase tracking-[0.28em] text-ink-dim">
             [ scan ] скрытые орбиты бизнеса

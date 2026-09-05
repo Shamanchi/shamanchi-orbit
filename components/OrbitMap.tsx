@@ -32,7 +32,6 @@ export default function OrbitMap() {
 
   useEffect(() => {
     if (reduce || typeof window === 'undefined') return
-    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) return
     try {
       const probe = document.createElement('canvas')
       const gl = probe.getContext('webgl2') || probe.getContext('webgl')
