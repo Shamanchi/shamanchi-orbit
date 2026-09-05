@@ -3,7 +3,7 @@
 Лендинг для мастерской Shamanchi Orbit. Собран строго по `ORBIT_DEV_HANDBOOK.md`: тёмный терминальный стиль, один акцент Chi Cyan, моноширинные цифры, структура из 11 секций.
 
 🔗 **Живой сайт:** https://shamanchi.ru/
-💬 **Telegram:** [@Shamanchii](https://t.me/Shamanchii)
+💬 **Telegram:** [@shamanchi_dev](https://t.me/shamanchi_dev)
 📧 **Email:** shamanchi_dev@mail.ru
 🐙 **GitHub:** [github.com/Shamanchi](https://github.com/Shamanchi)
 

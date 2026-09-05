@@ -86,7 +86,7 @@ export default function RootLayout({
         logo: 'https://shamanchi.ru/favicon.svg',
         sameAs: [
           'https://github.com/Shamanchi',
-          'https://t.me/Shamanchii',
+          'https://t.me/shamanchi_dev',
         ],
       },
       {

@@ -14,13 +14,13 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-2.5 font-mono text-xs text-ink-dim">
           <a
-            href="https://t.me/Shamanchii"
+            href="https://t.me/shamanchi_dev"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 transition-colors hover:text-ink"
           >
             <TelegramIcon size={14} />
-            @Shamanchii
+            @shamanchi_dev
           </a>
           <a href="mailto:shamanchi_dev@mail.ru" className="flex items-center gap-2 transition-colors hover:text-ink">
             <Mail size={14} strokeWidth={1.75} />
