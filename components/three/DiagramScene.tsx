@@ -6,7 +6,8 @@ import { Html, Line } from '@react-three/drei'
 import * as THREE from 'three'
 
 // Task-9 experiment: the "restored flow" state as a real 3D gravity system.
-// Desktop WebGL only — OrbitMap keeps the 2D SVG fallback for the rest.
+// WebGL-only — OrbitMap keeps the 2D SVG fallback for the rest. The camera
+// pulls back automatically on narrow panels so the whole orbit stays visible.
 
 const CYAN = '#00D4FF'
 const ICE = '#BFE3FF'
@@ -17,6 +18,7 @@ const TSEG = 1.15 // seconds to travel one straight node-to-node segment
 const NODE_DWELL = 0.24 // the pulse stops inside the node it has reached
 const FLASH_MS = 0.55 // node "hit" flash duration
 const CAM_POS = new THREE.Vector3(0, 5.1, 9.7)
+const CAM_HALF_TAN = Math.tan(THREE.MathUtils.degToRad(45) / 2)
 
 type StepType = 'system' | 'action'
 
@@ -456,8 +458,17 @@ function System({ animated }: { animated: boolean }) {
 
 function CameraRig({ animated }: { animated: boolean }) {
   const camera = useThree((state) => state.camera)
+  const size = useThree((state) => state.size)
   const pointer = useRef({ x: 0, y: 0 })
   const target = useMemo(() => new THREE.Vector3(), [])
+
+  // Pull the camera back on narrow panels (mobile) so the whole orbit
+  // system — including the outer labels — stays inside the window.
+  const baseDistance = useMemo(() => {
+    const aspect = size.height > 0 ? size.width / size.height : 1
+    const fit = 5.7 / (CAM_HALF_TAN * aspect)
+    return Math.min(20, Math.max(9.6, fit))
+  }, [size.width, size.height])
 
   useEffect(() => {
     const onMove = (event: PointerEvent) => {
@@ -470,14 +481,14 @@ function CameraRig({ animated }: { animated: boolean }) {
 
   useFrame(() => {
     if (!animated) {
-      camera.position.copy(CAM_POS)
+      camera.position.set(CAM_POS.x, CAM_POS.y, baseDistance)
       camera.lookAt(0, 0, 0)
       return
     }
     target.set(
       CAM_POS.x + pointer.current.x * 0.55,
       CAM_POS.y + pointer.current.y * 0.3,
-      CAM_POS.z
+      baseDistance
     )
     camera.position.lerp(target, 0.05)
     camera.lookAt(0, 0, 0)
