@@ -94,9 +94,8 @@ export default function Metrics() {
   const reduce = usePrefersReducedMotion()
 
   return (
-    <section id="metrics" className="relative overflow-hidden bg-[#050A14] py-40 lg:py-64">
+    <section id="metrics" className="relative overflow-hidden py-40 lg:py-64">
       <div className="relative mx-auto w-full max-w-[1200px] px-6">
-        <div className="grid-12" aria-hidden="true" />
 
         <Reveal className="relative mb-24 max-w-3xl">
           <div className="flex items-center gap-4">
