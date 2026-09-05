@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 
-const words = ['архитектура', 'точка рычага', 'орбита', 'документация', 'рост']
+const words = ['археология', 'точка рычага', 'орбита', 'документация', 'рост']
 const REPEATS = 8
 
 function Run() {

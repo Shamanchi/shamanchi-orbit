@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react'
 
 type Status = 'online' | 'offline' | 'unknown'
 
-export default function ReplyStatus() {
+export const REPLY_LABELS: Record<Status, string> = {
+  online: 'в сети · ответ в telegram — ~15 мин',
+  offline: 'вне сети · ответ — в течение дня',
+  unknown: 'ответ — в течение дня',
+}
+
+export function useReplyStatus(): Status {
   const [status, setStatus] = useState<Status>('unknown')
 
   useEffect(() => {
@@ -29,12 +35,11 @@ export default function ReplyStatus() {
     return () => window.clearInterval(timer)
   }, [])
 
-  const label =
-    status === 'online'
-      ? 'в сети · ответ в telegram — ~15 мин'
-      : status === 'offline'
-        ? 'вне сети · ответ — в течение дня'
-        : 'ответ — в течение дня'
+  return status
+}
+
+export default function ReplyStatus() {
+  const status = useReplyStatus()
 
   return (
     <p className="flex items-center gap-2.5 font-mono text-xs text-ink-dim">
@@ -45,7 +50,7 @@ export default function ReplyStatus() {
             : 'h-1.5 w-1.5 rounded-full bg-ink-dim/40'
         }
       />
-      <span>{label}</span>
+      <span>{REPLY_LABELS[status]}</span>
     </p>
   )
 }

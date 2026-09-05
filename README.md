@@ -35,7 +35,7 @@ components/
 ├── TypedTerminal.tsx  # Печатающийся манифест
 ├── Physics.tsx     # 3 паттерна: орбиты / рычаг / петля
 ├── OrbitMap.tsx    # Диаграмма «до/после» (интерактив)
-├── Process.tsx     # 5 шагов: архитектура → рост
+├── Process.tsx     # 5 шагов: археология → рост
 ├── Works.tsx       # 3 запущенные орбиты
 ├── Metrics.tsx     # 4 метрики + эффект quarks
 ├── MetricsQuarks.tsx  # one-shot циановый всплеск (WebGL)

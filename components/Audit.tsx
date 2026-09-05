@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { AnimatePresence, motion } from 'framer-motion'
 import { monoDigits } from '@/components/Text'
-import ReplyStatus from '@/components/ReplyStatus'
+import ReplyStatus, { REPLY_LABELS, useReplyStatus } from '@/components/ReplyStatus'
 import AuditStars from '@/components/AuditStars'
 
 const questions: Array<{ title: string; options: string[] }> = [
@@ -46,6 +46,7 @@ export default function Audit() {
   )}&body=${encodeURIComponent(summary)}`
 
   const [copied, setCopied] = useState(false)
+  const replyStatus = useReplyStatus()
 
   const copySummary = () => {
     if (!summary) return
@@ -179,8 +180,16 @@ export default function Audit() {
                           {copied ? 'Скопировано' : 'Скопировать'}
                         </button>
                       </div>
-                      <p className="mt-5 font-mono text-xs text-ink-dim">
-                        ответ — в течение дня. @PavelYrevichh · lietman46@mail.com
+                      <p className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-ink-dim">
+                        <span
+                          className={
+                            replyStatus === 'online'
+                              ? 'h-1.5 w-1.5 rounded-full bg-chi'
+                              : 'h-1.5 w-1.5 rounded-full bg-ink-dim/40'
+                          }
+                        />
+                        <span>{REPLY_LABELS[replyStatus]}</span>
+                        <span>· @PavelYrevichh · lietman46@mail.com</span>
                       </p>
                     </div>
                     </div>
