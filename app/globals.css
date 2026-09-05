@@ -140,6 +140,22 @@ body {
 .btn-phantom:hover {
   opacity: 1;
 }
+
+/* Invite pulse on the «Восстановленный поток» toggle while the diagram
+   still shows the broken state. Killed globally under reduced motion. */
+.btn-invite {
+  animation: invite-pulse 2.2s ease-in-out infinite;
+}
+@keyframes invite-pulse {
+  0%, 100% {
+    border-color: rgba(0, 212, 255, 0.35);
+    box-shadow: 0 0 0 0 rgba(0, 212, 255, 0);
+  }
+  50% {
+    border-color: rgba(0, 212, 255, 0.85);
+    box-shadow: 0 0 16px 1px rgba(0, 212, 255, 0.28);
+  }
+}
 .btn-dim {
   border: 1px solid var(--ghost);
   border-radius: var(--radius-sm);
@@ -156,6 +172,8 @@ body {
   width: 10px;
   height: 10px;
   border: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 9999px;
+  background: rgba(0, 212, 255, 0.08);
 }
 
 /* Static stars fallback */

@@ -59,13 +59,12 @@ function NodeMark({ index }: { index: number }) {
 
   if (step.type === 'system') {
     return (
-      <rect
-        x={x - 5}
-        y={y - 5}
-        width={10}
-        height={10}
-        fill="#0B1120"
-        stroke="rgba(0,212,255,0.5)"
+      <circle
+        cx={x}
+        cy={y}
+        r={6}
+        fill="url(#sphere-system)"
+        stroke="rgba(0,212,255,0.55)"
         strokeWidth={1.2}
       />
     )
@@ -233,6 +232,11 @@ export default function OrbitMapFlow({ reduced }: { reduced: boolean }) {
             </radialGradient>
           ) : null
         )}
+        <radialGradient id="sphere-system" cx="35%" cy="30%" r="80%">
+          <stop offset="0%" stopColor="#26405F" />
+          <stop offset="45%" stopColor="#0E182B" />
+          <stop offset="100%" stopColor="#070C15" />
+        </radialGradient>
         <radialGradient id="pulse-glow">
           <stop offset="0%" stopColor={CHI} stopOpacity={0.55} />
           <stop offset="100%" stopColor={CHI} stopOpacity={0} />

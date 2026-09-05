@@ -73,7 +73,7 @@ export default function OrbitMap() {
             <button type="button" onClick={() => setFlow(false)} aria-pressed={!flow} className={toggleClass(!flow)}>
               Разорванные узлы
             </button>
-            <button type="button" onClick={() => setFlow(true)} aria-pressed={flow} className={toggleClass(flow)}>
+            <button type="button" onClick={() => setFlow(true)} aria-pressed={flow} className={toggleClass(flow) + (flow ? '' : ' btn-invite')}>
               Восстановленный поток
             </button>
           </div>
