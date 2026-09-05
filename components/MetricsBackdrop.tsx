@@ -6,9 +6,16 @@ const DOT_COUNT = 24
 const DOT_RGB = '139, 152, 169'
 const DOT_ACCENT_RGB = '0, 212, 255'
 const LINE_RGB = '0, 212, 255'
-const PULSE_MS = 1400
+const ORBIT_MS = 64000
 
-type Point = { x: number; y: number; r: number; accent: boolean }
+type Point = {
+  x: number
+  y: number
+  r: number
+  accent: boolean
+  phase: number
+  rate: number
+}
 
 function seedPoints(width: number, height: number): Point[] {
   const points: Point[] = []
@@ -29,8 +36,10 @@ function seedPoints(width: number, height: number): Point[] {
     points.push({
       x,
       y,
-      r: 0.8 + Math.random() * 0.7,
+      r: 0.9 + Math.random() * 0.8,
       accent: points.length < 3,
+      phase: Math.random() * Math.PI * 2,
+      rate: 0.0018 + Math.random() * 0.0022,
     })
   }
   return points
@@ -43,23 +52,20 @@ type Scene = {
 }
 
 /**
- * Metrics section backdrop: distant static space (dimmer, smaller dots than
- * the site constellation) plus one thin orbit line behind the digits.
- * While the counters run, a single cyan impulse travels left to right along
- * the top arc and stops at the right end. Nothing else moves here.
+ * Metrics section backdrop: a living far-space field matching the site
+ * constellation. The dots breathe visibly (same brightness as the backdrop:
+ * 0.8 gray / 0.95 cyan, accent dots with a pulsing halo), and one thin cyan
+ * orbit line runs behind the digits with a small cyan sphere travelling
+ * along it slowly. The loop only runs while the section is on screen and
+ * never under reduced motion — there the scene is drawn once, static, with
+ * the sphere resting on the orbit.
  */
-export default function MetricsBackdrop({
-  play,
-  reduced,
-}: {
-  play: boolean
-  reduced: boolean
-}) {
+export default function MetricsBackdrop({ reduced }: { reduced: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<Scene | null>(null)
-  const drawRef = useRef<((pulseT: number | null) => void) | null>(null)
+  const drawRef = useRef<((timeMs: number | null) => void) | null>(null)
 
-  // Static scene: far-space dots + the orbit line. Pulse drawn on demand.
+  // Build the scene once; drawRef renders dots, orbit and sphere.
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -84,16 +90,43 @@ export default function MetricsBackdrop({
       }
       sceneRef.current = scene
 
-      const draw = (pulseT: number | null) => {
+      const draw = (timeMs: number | null) => {
         const { points } = scene
         context.clearRect(0, 0, scene.width, scene.height)
+        const alive = timeMs !== null
+
+        // Accent halos first, then all cores, mirroring ConstellationBackdrop.
+        if (alive) {
+          for (const p of points) {
+            if (!p.accent) continue
+            const sx = p.x * scene.width
+            const sy = p.y * scene.height
+            const pulse = 0.72 + 0.28 * Math.sin(timeMs / 900 + p.phase)
+            const halo = context.createRadialGradient(sx, sy, 0, sx, sy, 8)
+            halo.addColorStop(0, `rgba(${DOT_ACCENT_RGB}, ${(0.42 * pulse).toFixed(3)})`)
+            halo.addColorStop(1, `rgba(${DOT_ACCENT_RGB}, 0)`)
+            context.fillStyle = halo
+            context.beginPath()
+            context.arc(sx, sy, 8, 0, Math.PI * 2)
+            context.fill()
+          }
+        }
 
         for (const p of points) {
+          const rgb = p.accent ? DOT_ACCENT_RGB : DOT_RGB
+          const base = p.accent ? 0.95 : 0.8
+          const twinkle = alive
+            ? 0.5 + 0.5 * (0.5 + 0.5 * Math.sin(timeMs * p.rate + p.phase))
+            : 1
           context.beginPath()
-          context.arc(p.x * scene.width, p.y * scene.height, p.r, 0, Math.PI * 2)
-          context.fillStyle = p.accent
-            ? `rgba(${DOT_ACCENT_RGB}, 0.5)`
-            : `rgba(${DOT_RGB}, 0.42)`
+          context.arc(
+            p.x * scene.width,
+            p.y * scene.height,
+            p.accent ? 2.2 : p.r,
+            0,
+            Math.PI * 2
+          )
+          context.fillStyle = `rgba(${rgb}, ${(base * twinkle).toFixed(3)})`
           context.fill()
         }
 
@@ -107,20 +140,26 @@ export default function MetricsBackdrop({
         context.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2)
         context.stroke()
 
-        if (pulseT === null) return
-        const angle = Math.PI * (1 - pulseT)
+        const progress = alive ? (timeMs / ORBIT_MS) % 1 : 0
+        const angle = -Math.PI * 2 * progress
         const px = cx + rx * Math.cos(angle)
         const py = cy - ry * Math.sin(angle)
-        const glow = context.createRadialGradient(px, py, 0, px, py, 18)
-        glow.addColorStop(0, 'rgba(0, 212, 255, 0.5)')
+
+        const glow = context.createRadialGradient(px, py, 0, px, py, 24)
+        glow.addColorStop(0, 'rgba(0, 212, 255, 0.4)')
         glow.addColorStop(1, 'rgba(0, 212, 255, 0)')
         context.fillStyle = glow
         context.beginPath()
-        context.arc(px, py, 18, 0, Math.PI * 2)
+        context.arc(px, py, 24, 0, Math.PI * 2)
         context.fill()
+
+        const sphere = context.createRadialGradient(px - 1.4, py - 1.4, 0, px, py, 5)
+        sphere.addColorStop(0, '#F2FEFF')
+        sphere.addColorStop(0.45, '#00D4FF')
+        sphere.addColorStop(1, 'rgba(0, 212, 255, 0.55)')
+        context.fillStyle = sphere
         context.beginPath()
-        context.arc(px, py, 2.8, 0, Math.PI * 2)
-        context.fillStyle = '#E6FDFF'
+        context.arc(px, py, 5, 0, Math.PI * 2)
         context.fill()
       }
 
@@ -133,26 +172,33 @@ export default function MetricsBackdrop({
     return () => window.removeEventListener('resize', setup)
   }, [])
 
-  // One impulse while counters are running, then it rests at the right end.
+  // Ambient loop: twinkle + slow sphere, only while visible, off for reduced.
   useEffect(() => {
-    if (!play || reduced) return
-    const startedAt = performance.now()
-    let frame = 0
+    const canvas = canvasRef.current
+    if (!canvas || reduced) return
 
+    let frame = 0
     const tick = (now: number) => {
-      const progress = Math.min(1, (now - startedAt) / PULSE_MS)
-      const eased = 1 - Math.pow(1 - progress, 2.2)
-      if (drawRef.current) drawRef.current(eased)
-      if (progress < 1) {
-        frame = requestAnimationFrame(tick)
-      } else if (drawRef.current) {
-        drawRef.current(1)
-      }
+      if (drawRef.current) drawRef.current(now)
+      frame = requestAnimationFrame(tick)
     }
 
-    frame = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frame)
-  }, [play, reduced])
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          frame = requestAnimationFrame(tick)
+        } else {
+          cancelAnimationFrame(frame)
+        }
+      },
+      { rootMargin: '150px 0px' }
+    )
+    observer.observe(canvas)
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(frame)
+    }
+  }, [reduced])
 
   return (
     <canvas

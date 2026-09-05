@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import MetricsBackdrop from '@/components/MetricsBackdrop'
 
-const PULSE_MS = 1450
 
 const metrics = [
   {
@@ -92,34 +91,10 @@ function MetricValue({ metric }: { metric: (typeof metrics)[number] }) {
 }
 
 export default function Metrics() {
-  const sectionRef = useRef<HTMLElement | null>(null)
   const reduce = usePrefersReducedMotion()
-  const [counting, setCounting] = useState(false)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el || reduce) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setCounting(true)
-          observer.disconnect()
-          window.setTimeout(() => setCounting(false), PULSE_MS + 250)
-        }
-      },
-      { threshold: 0.35 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [reduce])
 
   return (
-    <section
-      id="metrics"
-      ref={sectionRef}
-      className="relative overflow-hidden bg-[#050A14] py-40 lg:py-64"
-    >
+    <section id="metrics" className="relative overflow-hidden bg-[#050A14] py-40 lg:py-64">
       <div className="relative mx-auto w-full max-w-[1200px] px-6">
         <div className="grid-12" aria-hidden="true" />
 
@@ -136,7 +111,7 @@ export default function Metrics() {
         </Reveal>
 
         <div className="relative border-t border-white/[0.06] pt-16 lg:pt-20">
-          <MetricsBackdrop play={counting} reduced={reduce} />
+          <MetricsBackdrop reduced={reduce} />
           <div className="relative grid grid-cols-1 gap-y-20 sm:grid-cols-2 lg:gap-x-16 lg:gap-y-28">
             {metrics.map((metric) => {
               const content = (

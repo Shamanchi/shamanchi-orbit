@@ -1,4 +1,4 @@
-﻿# Shamanchi Orbit
+# Shamanchi Orbit
 
 Лендинг для мастерской Shamanchi Orbit. Собран строго по `ORBIT_DEV_HANDBOOK.md`: тёмный терминальный стиль, один акцент Chi Cyan, моноширинные цифры, структура из 11 секций.
 
@@ -35,7 +35,7 @@ components/
 ├── TypedTerminal.tsx  # Печатающийся манифест
 ├── Physics.tsx     # 3 паттерна: орбиты / рычаг / петля
 ├── OrbitMap.tsx    # Диаграмма «до/после» (интерактив)
-├── Process.tsx     # 5 шагов: археология → рост
+├── Process.tsx     # 5 шагов: архитектура → рост
 ├── Works.tsx       # 3 запущенные орбиты
 ├── Metrics.tsx     # 4 метрики + эффект quarks
 ├── MetricsQuarks.tsx  # one-shot циановый всплеск (WebGL)

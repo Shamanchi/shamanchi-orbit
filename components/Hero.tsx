@@ -19,7 +19,7 @@ export default function Hero() {
           <HeroHeading />
           <p className="mt-7 max-w-xl text-[17px] leading-relaxed text-ink-dim">
             Мы находим скрытые орбиты и запускаем их. Ручной труд — симптом
-            разрыва между системами. Сначала археология, потом автоматизация.
+            разрыва между системами. Сначала архитектура, потом автоматизация.
             Аудит — <span className="font-mono text-ink">30</span> минут против
             месяцев ручной работы.
           </p>

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 
-const words = ['археология', 'точка рычага', 'орбита', 'документация', 'рост']
+const words = ['архитектура', 'точка рычага', 'орбита', 'документация', 'рост']
 const REPEATS = 8
 
 function Run() {
@@ -49,7 +49,7 @@ export default function Marquee() {
       <motion.div
         className="flex w-max"
         animate={{ x: ['0%', '-50%'] }}
-        transition={{ duration: 60, ease: 'linear', repeat: Infinity }}
+        transition={{ duration: 180, ease: 'linear', repeat: Infinity }}
       >
         <Run />
         <Run />
