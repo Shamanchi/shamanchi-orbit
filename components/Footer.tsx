@@ -19,8 +19,8 @@ export default function Footer() {
           >
             @Shamanchii
           </a>
-          <a href="mailto:lietman46@mail.com" className="transition-colors hover:text-ink">
-            lietman46@mail.com
+          <a href="mailto:shamanchi_dev@mail.ru" className="transition-colors hover:text-ink">
+            shamanchi_dev@mail.ru
           </a>
           <a
             href="https://github.com/Shamanchi"

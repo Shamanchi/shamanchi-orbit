@@ -4,7 +4,7 @@
 
 🔗 **Живой сайт:** https://shamanchi.ru/
 💬 **Telegram:** [@Shamanchii](https://t.me/Shamanchii)
-📧 **Email:** lietman46@mail.com
+📧 **Email:** shamanchi_dev@mail.ru
 🐙 **GitHub:** [github.com/Shamanchi](https://github.com/Shamanchi)
 
 ---

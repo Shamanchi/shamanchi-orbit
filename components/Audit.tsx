@@ -41,7 +41,7 @@ export default function Audit() {
   }, [answers])
 
   const telegramUrl = `https://t.me/Shamanchii?text=${encodeURIComponent(summary)}`
-  const emailUrl = `mailto:lietman46@mail.com?subject=${encodeURIComponent(
+  const emailUrl = `mailto:shamanchi_dev@mail.ru?subject=${encodeURIComponent(
     'Аудит орбиты — Shamanchi Orbit'
   )}&body=${encodeURIComponent(summary)}`
 
@@ -189,7 +189,7 @@ export default function Audit() {
                           }
                         />
                         <span>{REPLY_LABELS[replyStatus]}</span>
-                        <span>· @Shamanchii · lietman46@mail.com</span>
+                        <span>· @Shamanchii · shamanchi_dev@mail.ru</span>
                       </p>
                     </div>
                     </div>
@@ -221,10 +221,10 @@ export default function Audit() {
               @Shamanchii — напишите «карта»
             </a>
             <a
-              href="mailto:lietman46@mail.com?subject=%D0%9A%D0%B0%D1%80%D1%82%D0%B0%20%D1%80%D0%B0%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B2"
+              href="mailto:shamanchi_dev@mail.ru?subject=%D0%9A%D0%B0%D1%80%D1%82%D0%B0%20%D1%80%D0%B0%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B2"
               className="transition-colors hover:text-ink"
             >
-              lietman46@mail.com — тема «карта разрывов»
+              shamanchi_dev@mail.ru — тема «карта разрывов»
             </a>
           </div>
         </div>
