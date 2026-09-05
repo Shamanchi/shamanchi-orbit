@@ -15,8 +15,6 @@ const SMALL_AREA_PX = 520
 const POINT_COUNT_DESKTOP = 52
 const POINT_COUNT_MOBILE = 44
 const WRAP_MARGIN = 0.06
-const MOBILE_WIDTH_PX = 768
-
 type Point = {
   x: number
   y: number
@@ -75,9 +73,9 @@ function seedPoints(width: number, height: number): Point[] {
 
 /**
  * Site-wide fixed constellation: dots and faint links painted on a
- * full-viewport canvas behind the content. Same visual config as the old
- * hero constellation. Off on coarse pointers / small viewports and under
- * prefers-reduced-motion.
+ * full-viewport canvas behind the content (desktop and mobile alike), so
+ * every diagram — including the WebGL restored-flow scene — keeps the same
+ * backdrop. Still off under prefers-reduced-motion.
  */
 export default function ConstellationBackdrop() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -85,8 +83,7 @@ export default function ConstellationBackdrop() {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const coarse = window.matchMedia('(pointer: coarse)').matches
-    setEnabled(!reduced && !coarse && window.innerWidth >= MOBILE_WIDTH_PX)
+    setEnabled(!reduced)
   }, [])
 
   useEffect(() => {
