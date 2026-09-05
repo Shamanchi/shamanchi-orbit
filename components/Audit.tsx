@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { monoDigits } from '@/components/Text'
 import ReplyStatus, { REPLY_LABELS, useReplyStatus } from '@/components/ReplyStatus'
 import AuditStars from '@/components/AuditStars'
+import { Mail } from 'lucide-react'
+import TelegramIcon from '@/components/TelegramIcon'
 
 const questions: Array<{ title: string; options: string[] }> = [
   {
@@ -216,14 +218,16 @@ export default function Audit() {
               href="https://t.me/Shamanchii"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-ink"
+              className="flex items-center gap-2 transition-colors hover:text-ink"
             >
+              <TelegramIcon size={14} />
               @Shamanchii — напишите «карта»
             </a>
             <a
               href="mailto:shamanchi_dev@mail.ru?subject=%D0%9A%D0%B0%D1%80%D1%82%D0%B0%20%D1%80%D0%B0%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B2"
-              className="transition-colors hover:text-ink"
+              className="flex items-center gap-2 transition-colors hover:text-ink"
             >
+              <Mail size={14} strokeWidth={1.75} />
               shamanchi_dev@mail.ru — тема «карта разрывов»
             </a>
           </div>

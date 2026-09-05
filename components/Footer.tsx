@@ -1,4 +1,6 @@
 import OrbitMark from '@/components/OrbitMark'
+import TelegramIcon from '@/components/TelegramIcon'
+import { Github, Mail } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -15,19 +17,22 @@ export default function Footer() {
             href="https://t.me/Shamanchii"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-ink"
+            className="flex items-center gap-2 transition-colors hover:text-ink"
           >
+            <TelegramIcon size={14} />
             @Shamanchii
           </a>
-          <a href="mailto:shamanchi_dev@mail.ru" className="transition-colors hover:text-ink">
+          <a href="mailto:shamanchi_dev@mail.ru" className="flex items-center gap-2 transition-colors hover:text-ink">
+            <Mail size={14} strokeWidth={1.75} />
             shamanchi_dev@mail.ru
           </a>
           <a
             href="https://github.com/Shamanchi"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-ink"
+            className="flex items-center gap-2 transition-colors hover:text-ink"
           >
+            <Github size={14} strokeWidth={1.75} />
             github.com/Shamanchi
           </a>
         </div>
