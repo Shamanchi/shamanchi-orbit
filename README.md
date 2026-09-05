@@ -2,8 +2,8 @@
 
 Лендинг для мастерской Shamanchi Orbit. Собран строго по `ORBIT_DEV_HANDBOOK.md`: тёмный терминальный стиль, один акцент Chi Cyan, моноширинные цифры, структура из 11 секций.
 
-🔗 **Живой сайт:** https://shamanchi.github.io/shamanchi-orbit/
-💬 **Telegram:** [@PavelYrevichh](https://t.me/PavelYrevichh)
+🔗 **Живой сайт:** https://shamanchi.ru/
+💬 **Telegram:** [@Shamanchii](https://t.me/Shamanchii)
 📧 **Email:** lietman46@mail.com
 🐙 **GitHub:** [github.com/Shamanchi](https://github.com/Shamanchi)
 
@@ -63,5 +63,5 @@ npm run build     # статический экспорт в dist/
 ## Деплой
 
 - GitHub Actions: `.github/workflows/deploy.yml`
-- Push в `main` → автодеплой на https://shamanchi.github.io/shamanchi-orbit/
-- `basePath: '/shamanchi-orbit'`, `output: 'export'`
+- Push в `main` → автодеплой на https://shamanchi.ru/
+- `output: 'export'` — сайт в корне домена shamanchi.ru (`public/CNAME`)

@@ -2,14 +2,14 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import ConstellationBackdrop from '@/components/ConstellationBackdrop'
 
-const siteUrl = 'https://shamanchi.github.io/shamanchi-orbit/'
+const siteUrl = 'https://shamanchi.ru/'
 
 export const viewport: Viewport = {
   themeColor: '#0B1120',
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://shamanchi.github.io'),
+  metadataBase: new URL('https://shamanchi.ru'),
   title: 'Shamanchi Orbit — скрытые орбиты бизнес-процессов',
   description:
     'Большинство бизнесов управляют процессами, которых не существует. Мы находим скрытые орбиты и запускаем их. Археология процесса, одна точка рычага, автоматизация без хаоса. Аудит — 30 минут.',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
       'Большинство бизнесов управляют процессами, которых не существует. Мы находим скрытые орбиты и запускаем их.',
     images: [
       {
-        url: '/shamanchi-orbit/og-image.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Shamanchi Orbit — скрытые орбиты бизнес-процессов',
@@ -59,14 +59,14 @@ export const metadata: Metadata = {
     title: 'Shamanchi Orbit — скрытые орбиты бизнес-процессов',
     description:
       'Большинство бизнесов управляют процессами, которых не существует. Мы находим скрытые орбиты и запускаем их.',
-    images: ['/shamanchi-orbit/og-image.png'],
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: siteUrl,
   },
   icons: {
-    icon: '/shamanchi-orbit/favicon.svg',
-    shortcut: '/shamanchi-orbit/favicon.svg',
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
   },
 }
 
@@ -83,10 +83,10 @@ export default function RootLayout({
         '@id': siteUrl + '#organization',
         name: 'Shamanchi Orbit',
         url: siteUrl,
-        logo: 'https://shamanchi.github.io/shamanchi-orbit/favicon.svg',
+        logo: 'https://shamanchi.ru/favicon.svg',
         sameAs: [
           'https://github.com/Shamanchi',
-          'https://t.me/PavelYrevichh',
+          'https://t.me/Shamanchii',
         ],
       },
       {
@@ -94,7 +94,7 @@ export default function RootLayout({
         '@id': siteUrl + '#service',
         name: 'Shamanchi Orbit',
         url: siteUrl,
-        image: 'https://shamanchi.github.io/shamanchi-orbit/og-image.png',
+        image: 'https://shamanchi.ru/og-image.png',
         description:
           'Находим скрытые орбиты бизнес-процессов и запускаем их. Архитектура процесса, точка рычага, автоматизация без хаоса.',
         priceRange: 'По результатам аудита',

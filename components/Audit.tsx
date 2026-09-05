@@ -40,7 +40,7 @@ export default function Audit() {
     return lines.join('\n')
   }, [answers])
 
-  const telegramUrl = `https://t.me/PavelYrevichh?text=${encodeURIComponent(summary)}`
+  const telegramUrl = `https://t.me/Shamanchii?text=${encodeURIComponent(summary)}`
   const emailUrl = `mailto:lietman46@mail.com?subject=${encodeURIComponent(
     'Аудит орбиты — Shamanchi Orbit'
   )}&body=${encodeURIComponent(summary)}`
@@ -189,7 +189,7 @@ export default function Audit() {
                           }
                         />
                         <span>{REPLY_LABELS[replyStatus]}</span>
-                        <span>· @PavelYrevichh · lietman46@mail.com</span>
+                        <span>· @Shamanchii · lietman46@mail.com</span>
                       </p>
                     </div>
                     </div>
@@ -213,12 +213,12 @@ export default function Audit() {
           </p>
           <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs text-ink-dim">
             <a
-              href="https://t.me/PavelYrevichh"
+              href="https://t.me/Shamanchii"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-ink"
             >
-              @PavelYrevichh — напишите «карта»
+              @Shamanchii — напишите «карта»
             </a>
             <a
               href="mailto:lietman46@mail.com?subject=%D0%9A%D0%B0%D1%80%D1%82%D0%B0%20%D1%80%D0%B0%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B2"

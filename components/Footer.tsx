@@ -12,12 +12,12 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-2.5 font-mono text-xs text-ink-dim">
           <a
-            href="https://t.me/PavelYrevichh"
+            href="https://t.me/Shamanchii"
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors hover:text-ink"
           >
-            @PavelYrevichh
+            @Shamanchii
           </a>
           <a href="mailto:lietman46@mail.com" className="transition-colors hover:text-ink">
             lietman46@mail.com

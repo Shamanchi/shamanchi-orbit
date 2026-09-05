@@ -2,7 +2,6 @@
 const nextConfig = {
   output: 'export',
   distDir: process.env.DEV_DIST ? '.next-dev' : 'dist',
-  basePath: '/shamanchi-orbit',
   images: {
     unoptimized: true,
   },
