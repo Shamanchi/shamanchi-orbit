@@ -1,13 +1,18 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Reveal from '@/components/Reveal'
 import OrbitMapShards from '@/components/OrbitMapShards'
 import { usePrefersReducedMotion } from '@/components/usePrefersReducedMotion'
 
 const OrbitMapFlow = dynamic(() => import('@/components/OrbitMapFlow'), {
+  ssr: false,
+  loading: () => null,
+})
+
+const DiagramScene = dynamic(() => import('@/components/three/DiagramScene'), {
   ssr: false,
   loading: () => null,
 })
@@ -22,27 +27,46 @@ const toggleClass = (active: boolean) =>
 export default function OrbitMap() {
   const [flow, setFlow] = useState(false)
   const reduce = usePrefersReducedMotion()
+  const [webgl, setWebgl] = useState(false)
+  const capable3d = webgl && !reduce
+
+  useEffect(() => {
+    if (reduce || typeof window === 'undefined') return
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) return
+    try {
+      const probe = document.createElement('canvas')
+      const gl = probe.getContext('webgl2') || probe.getContext('webgl')
+      if (gl) setWebgl(true)
+    } catch {
+      // WebGL is unavailable — stay on the 2D diagram
+    }
+  }, [reduce])
 
   const diagram = flow ? (
     <div key="flow" className="absolute inset-0" role="img" aria-label="Состояние после: проекты движутся по орбитам вокруг вашего бизнеса">
-      <OrbitMapFlow reduced={reduce} />
+      {capable3d ? <DiagramScene /> : <OrbitMapFlow reduced={reduce} />}
+      {!capable3d && (
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center md:flex"
       >
-        <div className="relative flex flex-col items-center">
-          <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.12),transparent_70%)]" />
+        <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.10),transparent_70%)]" />
+        <div
+          className="relative flex flex-col items-center"
+          style={{ transform: 'translate(206px, -34px)' }}
+        >
           <span
-            className="relative font-display text-lg font-semibold tracking-tight text-ink sm:text-2xl"
-            style={{ textShadow: '0 0 42px rgba(0,212,255,0.45)' }}
+            className="relative font-display text-lg font-semibold tracking-tight text-chi sm:text-2xl"
+            style={{ textShadow: '0 1px 2px rgba(7,12,21,0.9), 0 0 14px rgba(7,12,21,0.7), 0 0 46px rgba(0,212,255,0.55)' }}
           >
             ваш бизнес
           </span>
-          <span className="relative mt-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-dim/70">
+          <span className="relative mt-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-chi/75">
             центр системы
           </span>
         </div>
       </div>
+      )}
     </div>
   ) : (
     <div key="broken" className="absolute inset-0">
@@ -80,7 +104,7 @@ export default function OrbitMap() {
         </div>
 
         <div className="relative overflow-hidden rounded-md border border-white/[0.06]">
-          <div className="relative aspect-[800/470] w-full">
+          <div className="relative h-[300px] w-full sm:h-[440px] md:aspect-[800/470] md:h-auto">
             {reduce ? (
               diagram
             ) : (

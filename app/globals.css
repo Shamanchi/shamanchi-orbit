@@ -171,9 +171,10 @@ body {
 .mark {
   width: 10px;
   height: 10px;
-  border: 1px solid rgba(0, 212, 255, 0.35);
+  border: 1px solid rgba(0, 212, 255, 0.9);
   border-radius: 9999px;
-  background: rgba(0, 212, 255, 0.08);
+  background: rgba(0, 212, 255, 0.22);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.35);
 }
 
 /* Static stars fallback */

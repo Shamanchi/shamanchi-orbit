@@ -88,7 +88,7 @@ export default function Pricing() {
               <ul className="mt-8 flex-1 space-y-3.5 border-t border-white/[0.06] pt-8">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3 text-sm leading-relaxed text-ink-dim">
-                    <span className="mt-[7px] h-1 w-1 shrink-0 border border-ink-dim/70" />
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full border border-ink-dim/70" />
                     {monoDigits(feature)}
                   </li>
                 ))}
